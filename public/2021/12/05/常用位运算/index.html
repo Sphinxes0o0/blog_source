@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"4soos.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="位运算符 &amp; : 对应位都为1时，结果为1  | : 对应位存在一个1时，结果为1  ^ : 对应位不同时，结果为1    异或运算的逆元素是本身, 即两次异或同一个数，结果不变： a ^ b ^ b &#x3D; a   ~ : 对一个数进行单目运算，把这个数的补码中的 0 和 1 全部取反，有符号整数的符号位在这 ~ 运算中同样会取反。   补码： 在二进制表示下，正数和 0 的补码为其本身，负">
+<meta property="og:type" content="article">
+<meta property="og:title" content="常用位运算">
+<meta property="og:url" content="https://4soos.github.io/2021/12/05/%E5%B8%B8%E7%94%A8%E4%BD%8D%E8%BF%90%E7%AE%97/index.html">
+<meta property="og:site_name" content="Young&#39;s Blog">
+<meta property="og:description" content="位运算符 &amp; : 对应位都为1时，结果为1  | : 对应位存在一个1时，结果为1  ^ : 对应位不同时，结果为1    异或运算的逆元素是本身, 即两次异或同一个数，结果不变： a ^ b ^ b &#x3D; a   ~ : 对一个数进行单目运算，把这个数的补码中的 0 和 1 全部取反，有符号整数的符号位在这 ~ 运算中同样会取反。   补码： 在二进制表示下，正数和 0 的补码为其本身，负">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-12-05T05:57:32.000Z">
+<meta property="article:modified_time" content="2021-12-05T07:29:59.409Z">
+<meta property="article:author" content="Young">
+<meta property="article:tag" content="bit op">
+<meta property="article:tag" content="c&#x2F;cpp">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://4soos.github.io/2021/12/05/%E5%B8%B8%E7%94%A8%E4%BD%8D%E8%BF%90%E7%AE%97/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>常用位运算 | Young's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Young's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Thoughts & Notes</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/4soos" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://4soos.github.io/2021/12/05/%E5%B8%B8%E7%94%A8%E4%BD%8D%E8%BF%90%E7%AE%97/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Young">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Young's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          常用位运算
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-12-05 13:57:32 / Modified: 15:29:59" itemprop="dateCreated datePublished" datetime="2021-12-05T13:57:32+08:00">2021-12-05</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="位运算符"><a href="#位运算符" class="headerlink" title="位运算符"></a>位运算符</h2><ul>
+<li><p><code>&amp;</code> : 对应位都为1时，结果为1</p>
+</li>
+<li><p><code>|</code> : 对应位存在一个1时，结果为1</p>
+</li>
+<li><p><code>^</code> : 对应位不同时，结果为1</p>
+</li>
+</ul>
+<blockquote>
+<p>异或运算的逆元素是本身, 即两次异或同一个数，结果不变： <code>a ^ b ^ b = a</code></p>
+</blockquote>
+<ul>
+<li><code>~</code> : 对一个数进行单目运算，把这个数的补码中的 0 和 1 全部取反，<br>有符号整数的符号位在这 <code>~</code> 运算中同样会取反。</li>
+</ul>
+<blockquote>
+<p>补码： 在二进制表示下，正数和 0 的补码为其本身，负数的补码是将其对应正数按位取反后加一。</p>
+</blockquote>
+<p>在二进制表示下，正数和 0 的补码为其本身，负数的补码是将其对应正数按位取反后加一。</p>
+<p>$$<br>5 =(00000101)_2 \<br>-5 =(11111010)_2 \<br>-5_补 =(11111011)_2 \<br>-(-5) =(00000100)_2 = 4<br>$$</p>
+<ul>
+<li><code>&lt;&lt;</code> 和 <code>&gt;&gt;</code> : 将二进制向左（右）移动对应的位数的值，</li>
+</ul>
+<p>$$<br>11 =(00001011)_2 \<br>11 &lt;&lt; 3 =(01011000)_2 = 88 \<br>11 &gt;&gt; 2 =(00000010)_2 = 2<br>$$</p>
+<blockquote>
+<p>在 C++ 中，右移操作中右侧多余的位将会被舍弃，而左侧较为复杂：</p>
+<ul>
+<li>对于无符号数，会在左侧补 0；</li>
+<li>对于有符号数，则会用最高位的数（其实就是符号位，非负数为 0，负数为 1）补齐。左移操作总是在右侧补 0。</li>
+</ul>
+</blockquote>
+<h2 id="复合赋值位运算符"><a href="#复合赋值位运算符" class="headerlink" title="复合赋值位运算符"></a>复合赋值位运算符</h2><p>和 <code>+=</code> , <code>-=</code> 等运算符类似，位运算也有复合赋值运算符：<br><code>&amp;=</code> , <code>|=</code> , <code>^=</code> , <code>&lt;&lt;=</code> , <code>&gt;&gt;=</code> 。（取反是单目运算，所以没有。）</p>
+<blockquote>
+<p>位运算的优先级低于算术运算符（除了取反），而按位与、按位或及异或低于比较运算符，所以使用时需多加注意，在必要时添加括号。</p>
+</blockquote>
+<h2 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h2><ul>
+<li><p>嵌入式中对寄存器进行按位计算，取值，置位</p>
+</li>
+<li><p>高效地进行某些运算，代替其它低效的方式。</p>
+</li>
+<li><p>表示集合。（常用于 状压 DP 。）</p>
+</li>
+<li><p>要求进行位运算。</p>
+</li>
+</ul>
+<h3 id="常用运算"><a href="#常用运算" class="headerlink" title="常用运算"></a>常用运算</h3><table>
+<thead>
+<tr>
+<th>操作</th>
+<th>运算</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>取出整数 n 在二进制表示下的第 k 位</td>
+<td>(n &gt;&gt; k) &amp; 1</td>
+</tr>
+<tr>
+<td>取出整数n 在二进制表示下的第 0 ~ k - 1 位 (后 k 位)</td>
+<td>n &amp; ((1 &lt;&lt; k) - 1)</td>
+</tr>
+<tr>
+<td>对整数 n 在二进制表示下的第 k 位取反</td>
+<td>n xor (1 &lt;&lt; k)</td>
+</tr>
+<tr>
+<td>对整数 n 在二进制表示下的第 k 位赋值 1</td>
+<td>n</td>
+</tr>
+<tr>
+<td>对整数 n 在二进制表示下的第 k 位赋值 0</td>
+<td>n &amp; (~(1 &lt;&lt; k))</td>
+</tr>
+</tbody></table>
+<h3 id="表示集合"><a href="#表示集合" class="headerlink" title="表示集合"></a>表示集合</h3><table>
+<thead>
+<tr>
+<th>操作</th>
+<th>集合表示</th>
+<th>位运算语句</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>交集</td>
+<td>a∩b</td>
+<td>a &amp; b</td>
+</tr>
+<tr>
+<td>并集</td>
+<td>a∪b</td>
+<td>`a</td>
+</tr>
+<tr>
+<td>补集</td>
+<td>\overline{a}</td>
+<td>~a （全集为二进制都是 1）</td>
+</tr>
+<tr>
+<td>差集</td>
+<td>a∖b</td>
+<td>a &amp; (~b)</td>
+</tr>
+<tr>
+<td>对称差</td>
+<td>a△b</td>
+<td>a ^ b</td>
+</tr>
+</tbody></table>
+<h3 id="实际代码"><a href="#实际代码" class="headerlink" title="实际代码"></a>实际代码</h3><ul>
+<li>幂运算</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 乘 2 的非负整数次幂</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">mulPowerOfTwo</span><span class="params">(<span class="keyword">int</span> n, <span class="keyword">int</span> m)</span> </span>&#123;  <span class="comment">// 计算 n*(2^m)</span></span><br><span class="line">  <span class="keyword">return</span> n &lt;&lt; m;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 除以 2 的非负整数次幂</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">divPowerOfTwo</span><span class="params">(<span class="keyword">int</span> n, <span class="keyword">int</span> m)</span> </span>&#123;  <span class="comment">// 计算 n/(2^m)</span></span><br><span class="line">  <span class="keyword">return</span> n &gt;&gt; m;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 对 2 的非负整数次幂取模</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">modPowerOfTwo</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> mod)</span> </span>&#123; <span class="keyword">return</span> x &amp; (mod - <span class="number">1</span>); &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 判断一个数是不是 2 的正整数次幂</span></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">isPowerOfTwo</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123; <span class="keyword">return</span> n &gt; <span class="number">0</span> &amp;&amp; (n &amp; (n - <span class="number">1</span>)) == <span class="number">0</span>; &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 取绝对值,在某些机器上，效率比 n &gt; 0 ? n : -n 高。</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">Abs</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> (n ^ (n &gt;&gt; <span class="number">31</span>)) - (n &gt;&gt; <span class="number">31</span>);</span><br><span class="line">  <span class="comment">/* n&gt;&gt;31 取得 n 的符号，若 n 为正数，n&gt;&gt;31 等于 0，若 n 为负数，n&gt;&gt;31 等于 -1</span></span><br><span class="line"><span class="comment">     若 n 为正数 n^0=n, 数不变，若 n 为负数有 n^(-1)</span></span><br><span class="line"><span class="comment">     需要计算 n 和 -1 的补码，然后进行异或运算，</span></span><br><span class="line"><span class="comment">     结果 n 变号并且为 n 的绝对值减 1，再减去 -1 就是绝对值 */</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 取两个数的最大/最小值</span></span><br><span class="line"><span class="comment">// 在某些机器上，效率比 a &gt; b ? a : b 高。</span></span><br><span class="line"><span class="comment">// 如果 a&gt;=b,(a-b)&gt;&gt;31 为 0，否则为 -1</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">max</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span> </span>&#123; <span class="keyword">return</span> b &amp; ((a - b) &gt;&gt; <span class="number">31</span>) | a &amp; (~(a - b) &gt;&gt; <span class="number">31</span>); &#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">min</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span> </span>&#123; <span class="keyword">return</span> a &amp; ((a - b) &gt;&gt; <span class="number">31</span>) | b &amp; (~(a - b) &gt;&gt; <span class="number">31</span>); &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//判断符号是否相同</span></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">isSameSign</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span> </span>&#123;  <span class="comment">// 有 0 的情况例外</span></span><br><span class="line">  <span class="keyword">return</span> (x ^ y) &gt;= <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 交换两个数</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">swap</span><span class="params">(<span class="keyword">int</span> &amp;a, <span class="keyword">int</span> &amp;b)</span> </span>&#123; a ^= b ^= a ^= b; &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取一个数二进制的某一位</span></span><br><span class="line"><span class="comment">// 获取 a 的第 b 位，最低位编号为 0</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">getBit</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span> </span>&#123; <span class="keyword">return</span> (a &gt;&gt; b) &amp; <span class="number">1</span>; &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>平常写除法是向 0 取整，而这里的右移是向下取整（注意这里的区别）:<br>即当数大于等于 0 时两种方法等价，当数小于 0 时会有区别，如： -1 / 2 的值为 0 ，而 -1 &gt;&gt; 1 的值为 −1 。</p>
+</blockquote>
+<h2 id="C-STL-bitset-容器"><a href="#C-STL-bitset-容器" class="headerlink" title="C++ STL bitset 容器"></a>C++ STL bitset 容器</h2><p>bitset 容器其实就是个01串。<br>可以被看作是一个bool数组。它比bool数组更优秀的优点是：</p>
+<ul>
+<li>节约空间</li>
+<li>节约时间 </li>
+<li>支持基本的位运算。在bitset容器中，8位占一个字节，相比于bool数组4位一个字节的空间利用率要高很多。同时，n位的bitset在执行一次位运算的复杂度可以被看作是n/32，这都是bool数组所没有的优秀性质。</li>
+</ul>
+<p>包含在自带的，<code>bitset</code> 头文件中：</p>
+<h3 id="bitset-容器的声明"><a href="#bitset-容器的声明" class="headerlink" title="bitset 容器的声明"></a>bitset 容器的声明</h3><p>因为bitset容器就是装01串的，所以不用在<code>&lt; &gt;</code>中装数据类型，这和一般的STL容器不太一样。<code>&lt; &gt;</code>中装01串的位数。</p>
+<p>如：（声明一个105位的bitset）</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bitset&lt;100000&gt; s;</span><br></pre></td></tr></table></figure>
+
+<h3 id="对bitset容器的一些操作"><a href="#对bitset容器的一些操作" class="headerlink" title="对bitset容器的一些操作"></a>对bitset容器的一些操作</h3><h4 id="1、常用的操作函数"><a href="#1、常用的操作函数" class="headerlink" title="1、常用的操作函数"></a>1、常用的操作函数</h4><p>和其他的STL容器一样，对bitset的很多操作也是由自带函数来实现的</p>
+<h5 id="count-any-none"><a href="#count-any-none" class="headerlink" title="count(), any(), none()"></a>count(), any(), none()</h5><p>count，数数的意思。它的作用是数出1的个数。即s.count()返回s中有多少个1.</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">s.<span class="built_in">count</span>(); <span class="comment">// s中有多少个1.</span></span><br><span class="line">s.<span class="built_in">any</span>();   <span class="comment">// s中存在0, true, 反之则为false</span></span><br><span class="line">s.<span class="built_in">none</span>();  <span class="comment">// s中不存在0， true</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="set-reset-flip"><a href="#set-reset-flip" class="headerlink" title="set(), reset(), flip()"></a>set(), reset(), flip()</h5><p>set()函数的作用是把bitset全部置为1.</p>
+<p>特别地，set()函数里面可以传参数。set(u,v)的意思是把bitset中的第u位变成v,v∈0/1。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">s.<span class="built_in">set</span>(); <span class="comment">// 全部置为1</span></span><br><span class="line">s.<span class="built_in">set</span>(u,v); <span class="comment">// 第u位变成v,v∈0/1</span></span><br><span class="line"></span><br><span class="line">s.<span class="built_in">reset</span>(); <span class="comment">// 所有位置为0</span></span><br><span class="line">s.<span class="built_in">reset</span>(k); <span class="comment">// 第k位变成0</span></span><br><span class="line"></span><br><span class="line">s.<span class="built_in">flip</span>(); <span class="comment">//全部按位取反</span></span><br><span class="line">s.<span class="built_in">flip</span>(k);<span class="comment">// 第k位取反</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="2、位运算操作在bitset中的实现"><a href="#2、位运算操作在bitset中的实现" class="headerlink" title="2、位运算操作在bitset中的实现"></a>2、位运算操作在bitset中的实现</h4><p>bitset的作用就是帮助我们方便地实现位运算的相关操作。它当然支持位运算的一些操作内容。编写程序的时候对数进行的二进制运算均可以用在bitset函数上。</p>
+<p>另外，bitset容器还支持直接取值和直接赋值的操作：具体操作方式如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">s[<span class="number">3</span>]=<span class="number">1</span>;</span><br><span class="line">s[<span class="number">5</span>]=<span class="number">0</span>;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这里要注意：在bitset容器中，最低位为0。这与数组实现仍然有区别。</p>
+</blockquote>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">bitset的运算就像一个普通的整数一样，可以进行与(&amp;)、或(|)、异或(^)、左移(&lt;&lt;)、右移(&gt;&gt;)等操作。</span><br><span class="line"></span><br><span class="line"><span class="comment">// bitset operators</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span>       <span class="comment">// std::cout</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span>         <span class="comment">// std::string</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bitset&gt;</span>         <span class="comment">// std::bitset</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span> <span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="function">std::bitset&lt;4&gt; <span class="title">foo</span> <span class="params">(std::string(<span class="string">&quot;1001&quot;</span>))</span></span>;</span><br><span class="line">  <span class="function">std::bitset&lt;4&gt; <span class="title">bar</span> <span class="params">(std::string(<span class="string">&quot;0011&quot;</span>))</span></span>;</span><br><span class="line"></span><br><span class="line">  std::cout &lt;&lt; (foo^=bar) &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;       <span class="comment">// 1010 (XOR,assign)</span></span><br><span class="line">  std::cout &lt;&lt; (foo&amp;=bar) &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;       <span class="comment">// 0010 (AND,assign)</span></span><br><span class="line">  std::cout &lt;&lt; (foo|=bar) &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;       <span class="comment">// 0011 (OR,assign)</span></span><br><span class="line"></span><br><span class="line">  std::cout &lt;&lt; (foo&lt;&lt;=<span class="number">2</span>) &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;        <span class="comment">// 1100 (SHL,assign)</span></span><br><span class="line">  std::cout &lt;&lt; (foo&gt;&gt;=<span class="number">1</span>) &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;        <span class="comment">// 0110 (SHR,assign)</span></span><br><span class="line"></span><br><span class="line">  std::cout &lt;&lt; (~bar) &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;           <span class="comment">// 1100 (NOT)</span></span><br><span class="line">  std::cout &lt;&lt; (bar&lt;&lt;<span class="number">1</span>) &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;         <span class="comment">// 0110 (SHL)</span></span><br><span class="line">  std::cout &lt;&lt; (bar&gt;&gt;<span class="number">1</span>) &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;         <span class="comment">// 0001 (SHR)</span></span><br><span class="line"></span><br><span class="line">  std::cout &lt;&lt; (foo==bar) &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;       <span class="comment">// false (0110==0011)</span></span><br><span class="line">  std::cout &lt;&lt; (foo!=bar) &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;       <span class="comment">// true  (0110!=0011)</span></span><br><span class="line"></span><br><span class="line">  std::cout &lt;&lt; (foo&amp;bar) &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;        <span class="comment">// 0010</span></span><br><span class="line">  std::cout &lt;&lt; (foo|bar) &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;        <span class="comment">// 0111</span></span><br><span class="line">  std::cout &lt;&lt; (foo^bar) &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;        <span class="comment">// 0101</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/bit-op/" rel="tag"># bit op</a>
+              <a href="/tags/c-cpp/" rel="tag"># c/cpp</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/12/05/huawei-adb/" rel="prev" title="huawei adb">
+      <i class="fa fa-chevron-left"></i> huawei adb
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%8D%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">1.</span> <span class="nav-text">位运算符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%8D%E5%90%88%E8%B5%8B%E5%80%BC%E4%BD%8D%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">2.</span> <span class="nav-text">复合赋值位运算符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BA%94%E7%94%A8"><span class="nav-number">3.</span> <span class="nav-text">应用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E8%BF%90%E7%AE%97"><span class="nav-number">3.1.</span> <span class="nav-text">常用运算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A1%A8%E7%A4%BA%E9%9B%86%E5%90%88"><span class="nav-number">3.2.</span> <span class="nav-text">表示集合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E9%99%85%E4%BB%A3%E7%A0%81"><span class="nav-number">3.3.</span> <span class="nav-text">实际代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C-STL-bitset-%E5%AE%B9%E5%99%A8"><span class="nav-number">4.</span> <span class="nav-text">C++ STL bitset 容器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#bitset-%E5%AE%B9%E5%99%A8%E7%9A%84%E5%A3%B0%E6%98%8E"><span class="nav-number">4.1.</span> <span class="nav-text">bitset 容器的声明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%B9bitset%E5%AE%B9%E5%99%A8%E7%9A%84%E4%B8%80%E4%BA%9B%E6%93%8D%E4%BD%9C"><span class="nav-number">4.2.</span> <span class="nav-text">对bitset容器的一些操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%E3%80%81%E5%B8%B8%E7%94%A8%E7%9A%84%E6%93%8D%E4%BD%9C%E5%87%BD%E6%95%B0"><span class="nav-number">4.2.1.</span> <span class="nav-text">1、常用的操作函数</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#count-any-none"><span class="nav-number">4.2.1.1.</span> <span class="nav-text">count(), any(), none()</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#set-reset-flip"><span class="nav-number">4.2.1.2.</span> <span class="nav-text">set(), reset(), flip()</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%E3%80%81%E4%BD%8D%E8%BF%90%E7%AE%97%E6%93%8D%E4%BD%9C%E5%9C%A8bitset%E4%B8%AD%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="nav-number">4.2.2.</span> <span class="nav-text">2、位运算操作在bitset中的实现</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Young</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Young</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
