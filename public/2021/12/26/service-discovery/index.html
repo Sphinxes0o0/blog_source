@@ -20,20 +20,21 @@
     var CONFIG = {"hostname":"4soos.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="环境 系统:Manjaro 桌面:GNOME  ADB链接手机USB连接具体的解决办法如下： 1、打开拨号界面,输入: *#*#2846579#*#*。自动进入工程菜单,选择后台设置——&gt;usb端口设置——&gt;生产模式.2、打开调试设置–系统和更新–开发者选项–打开调试. 3、USB连接方式选择传输文件 4、在设置中搜索HDB，打开允许HiSuite通过HDB连接设备5、回到adb命令下">
+  <meta name="description" content="服务发现基本流程 Register, 服务启动时候进行注册  Query, 查询已注册服务信息  Healthy Check,确认服务状态是否健康   整个过程很简单。大致就是在服务启动的时候，先去进行注册，并且定时反馈本身功能是否正常。由服务发现机制统一负责维护一份正确或者可用的服务清单。因此，服务本身需要能随时接受查下，反馈调用方服务所要的信息。 注册一整套服务发现机制顺利运行，需要维护一份可">
 <meta property="og:type" content="article">
-<meta property="og:title" content="huawei adb">
-<meta property="og:url" content="https://4soos.github.io/2021/12/05/huawei-adb/index.html">
+<meta property="og:title" content="service-discovery">
+<meta property="og:url" content="https://4soos.github.io/2021/12/26/service-discovery/index.html">
 <meta property="og:site_name" content="Young&#39;s Blog">
-<meta property="og:description" content="环境 系统:Manjaro 桌面:GNOME  ADB链接手机USB连接具体的解决办法如下： 1、打开拨号界面,输入: *#*#2846579#*#*。自动进入工程菜单,选择后台设置——&gt;usb端口设置——&gt;生产模式.2、打开调试设置–系统和更新–开发者选项–打开调试. 3、USB连接方式选择传输文件 4、在设置中搜索HDB，打开允许HiSuite通过HDB连接设备5、回到adb命令下">
+<meta property="og:description" content="服务发现基本流程 Register, 服务启动时候进行注册  Query, 查询已注册服务信息  Healthy Check,确认服务状态是否健康   整个过程很简单。大致就是在服务启动的时候，先去进行注册，并且定时反馈本身功能是否正常。由服务发现机制统一负责维护一份正确或者可用的服务清单。因此，服务本身需要能随时接受查下，反馈调用方服务所要的信息。 注册一整套服务发现机制顺利运行，需要维护一份可">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2021-12-04T17:03:46.000Z">
-<meta property="article:modified_time" content="2021-12-04T17:06:07.319Z">
+<meta property="article:published_time" content="2021-12-26T09:46:21.000Z">
+<meta property="article:modified_time" content="2021-12-26T09:53:24.226Z">
 <meta property="article:author" content="Young">
-<meta property="article:tag" content="adb">
+<meta property="article:tag" content="someip-sd">
+<meta property="article:tag" content="service discovery">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://4soos.github.io/2021/12/05/huawei-adb/">
+<link rel="canonical" href="https://4soos.github.io/2021/12/26/service-discovery/">
 
 
 <script id="page-configurations">
@@ -46,7 +47,7 @@
   };
 </script>
 
-  <title>huawei adb | Young's Blog</title>
+  <title>service-discovery | Young's Blog</title>
   
 
 
@@ -160,7 +161,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://4soos.github.io/2021/12/05/huawei-adb/">
+    <link itemprop="mainEntityOfPage" href="https://4soos.github.io/2021/12/26/service-discovery/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -173,7 +174,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          huawei adb
+          service-discovery
         </h1>
 
         <div class="post-meta">
@@ -184,7 +185,16 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2021-12-05 01:03:46 / Modified: 01:06:07" itemprop="dateCreated datePublished" datetime="2021-12-05T01:03:46+08:00">2021-12-05</time>
+              <time title="Created: 2021-12-26 17:46:21 / Modified: 17:53:24" itemprop="dateCreated datePublished" datetime="2021-12-26T17:46:21+08:00">2021-12-26</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/concepts/" itemprop="url" rel="index"><span itemprop="name">concepts</span></a>
+                </span>
             </span>
 
           
@@ -198,14 +208,64 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><ul>
-<li>系统:Manjaro</li>
-<li>桌面:GNOME</li>
+        <h1 id="服务发现"><a href="#服务发现" class="headerlink" title="服务发现"></a>服务发现</h1><h2 id="基本流程"><a href="#基本流程" class="headerlink" title="基本流程"></a>基本流程</h2><ul>
+<li><p>Register, 服务启动时候进行注册</p>
+</li>
+<li><p>Query, 查询已注册服务信息</p>
+</li>
+<li><p>Healthy Check,确认服务状态是否健康</p>
+</li>
 </ul>
-<h2 id="ADB链接手机"><a href="#ADB链接手机" class="headerlink" title="ADB链接手机"></a>ADB链接手机</h2><p>USB连接具体的解决办法如下：</p>
-<h3 id="1、打开拨号界面-输入-2846579-。自动进入工程菜单-选择后台设置——-gt-usb端口设置——-gt-生产模式"><a href="#1、打开拨号界面-输入-2846579-。自动进入工程菜单-选择后台设置——-gt-usb端口设置——-gt-生产模式" class="headerlink" title="1、打开拨号界面,输入: *#*#2846579#*#*。自动进入工程菜单,选择后台设置——&gt;usb端口设置——&gt;生产模式."></a>1、打开拨号界面,输入: <code>*#*#2846579#*#*</code>。自动进入工程菜单,选择后台设置——&gt;usb端口设置——&gt;生产模式.</h3><h3 id="2、打开调试"><a href="#2、打开调试" class="headerlink" title="2、打开调试"></a>2、打开调试</h3><p>设置–系统和更新–开发者选项–打开调试.</p>
-<h3 id="3、USB连接方式"><a href="#3、USB连接方式" class="headerlink" title="3、USB连接方式"></a>3、USB连接方式</h3><p>选择传输文件</p>
-<h3 id="4、在设置中搜索HDB，打开允许HiSuite通过HDB连接设备"><a href="#4、在设置中搜索HDB，打开允许HiSuite通过HDB连接设备" class="headerlink" title="4、在设置中搜索HDB，打开允许HiSuite通过HDB连接设备"></a>4、在设置中搜索HDB，打开允许HiSuite通过HDB连接设备</h3><h3 id="5、回到adb命令下查看是否已经连接上了"><a href="#5、回到adb命令下查看是否已经连接上了" class="headerlink" title="5、回到adb命令下查看是否已经连接上了"></a>5、回到adb命令下查看是否已经连接上了</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb devices</span><br></pre></td></tr></table></figure>
+<p>整个过程很简单。大致就是在服务启动的时候，先去进行注册，并且定时反馈本身功能是否正常。由服务发现机制统一负责维护一份正确或者可用的服务清单。因此，服务本身需要能随时接受查下，反馈调用方服务所要的信息。</p>
+<h2 id="注册"><a href="#注册" class="headerlink" title="注册"></a>注册</h2><p>一整套服务发现机制顺利运行，需要维护一份可用的服务列表。包含服务注册与移除功能，以及健康检查。</p>
+<p>常见的注册模式</p>
+<h3 id="自主注册"><a href="#自主注册" class="headerlink" title="自主注册"></a>自主注册</h3><p>自主注册模式，由服务(client)本身来维护。<br>每个服务启动后，需要到统一的服务注册中心进行注册登记，服务正常终止后，也可以到注册中心移除自身的注册记录。<br>在服务执行过程中，通过不断的发送心跳信息，来通知注册中心，本服务运行正常。注册中心只要超过一定的时间没有收到心跳消息，<br>就可以将这个服务状态判断为异常，进而移除该服务的注册记录。</p>
+<h3 id="第三方注册"><a href="#第三方注册" class="headerlink" title="第三方注册"></a>第三方注册</h3><p>这个模式与自主注册相比，区别是健康检查的动作不是由服务本身(client)来负责，而是由第三方服务来确认。<br>因为有时候服务自身发送心跳信息的方式并不精确，因为可能服务本身已经存在故障，某些接口功能不可用，<br>但仍然可以不断的发送心跳信息，导致注册中心没有发觉该服务已经异常，从而源源不断的将流量打到已经异常的服务上来。<br>所以, 确认服务是否正常运转的健康检查机制，就不能只依靠心跳，必须通过其它第三方的验证，不断的从外部来确认服务本身的健康状态。</p>
+<p>在实际应用中, 需要根据需求合理搭配服务, 和管理机制.</p>
+<h2 id="发现"><a href="#发现" class="headerlink" title="发现"></a>发现</h2><p>发现机制主要包括三种：</p>
+<ul>
+<li><p>服务提供者：<br>服务启动时将服务信息注册到注册中心，服务退出时将注册中心的服务信息删除掉。</p>
+</li>
+<li><p>服务消费者：<br>从服务注册表获取服务提供者的最新网络位置等服务信息，维护与服务提供者之间的通信。</p>
+</li>
+<li><p>注册中心：<br>服务提供者和服务消费者之间的一个桥梁</p>
+</li>
+</ul>
+<p>服务发现机制的关键部分是注册中心。注册中心提供管理和查询服务注册信息的API。<br>当服务提供者的实例发生变更时（新增/删除服务），服务注册表更新最新的状态列表，并将其最新列表以适当的方式通知给服务消费者。</p>
+<h3 id="常用的发现模式"><a href="#常用的发现模式" class="headerlink" title="常用的发现模式"></a>常用的发现模式</h3><h4 id="客户端发现模式"><a href="#客户端发现模式" class="headerlink" title="客户端发现模式"></a>客户端发现模式</h4><p>首先要进行的是到服务注册中心获取服务列表，然后再根据调用端本地的负载均衡策略，进行服务调用:</p>
+<ul>
+<li><p>1.服务提供者向注册中心进行注册，提交自己的相关信息 (register)</p>
+</li>
+<li><p>2.服务消费者定期从注册中心获取服务提供者列表 (keep alive)</p>
+</li>
+<li><p>3.服务消费者通过自身的负载均衡算法，在服务提供者列表里面选择一个合适的服务提供者，进行访问</p>
+</li>
+</ul>
+<h4 id="服务端发现模式。"><a href="#服务端发现模式。" class="headerlink" title="服务端发现模式。"></a>服务端发现模式。</h4><ul>
+<li>1 服务提供者向注册中心进行服务注册 </li>
+<li>2 注册中心提供负载均衡功能， </li>
+<li>3 服务消费者去请求注册中心，由注册中心根据服务提供列表的健康情况，选择合适的服务提供者供服务消费者调用</li>
+</ul>
+<blockquote>
+<p>本质区别在于，客户端是否保存服务列表信息</p>
+</blockquote>
+<h3 id="实现方案"><a href="#实现方案" class="headerlink" title="实现方案"></a>实现方案</h3><h4 id="file"><a href="#file" class="headerlink" title="file"></a>file</h4><p>以文件的形式实现服务发现，这是一个比较简单的方案。<br>其基本原理就是将服务提供者的信息(ip:port)写入文件中，服务消费者加载该文件，<br>获取服务提供者的信息，根据一定的策略，进行访问。</p>
+<p>需要注意的是，因为以文件形式提供服务发现，服务消费者要定期的去访问该文件，<br>以获得最新的服务提供者列表，这里有个小优化点，就是可以有个线程定时去做该任务，<br>首先去用该文件的最后一次修改时间跟服务上一次读取文件时候存储的修改时间做对比，<br>如果时间一致，表明文件未做修改，那么就不需要重新做加载了，反之，重新加载文件。</p>
+<p>文件方式实现服务发现，其特点显而易见：</p>
+<ul>
+<li><p>优点：<br>实现简单，去中心化</p>
+</li>
+<li><p>缺点：<br>需要服务消费者去定时操作，如果某一个文件推送失败，那么就会造成异常现象</p>
+</li>
+</ul>
+<blockquote>
+<p>SOME/IP 就是通过文件的方式实现.</p>
+</blockquote>
+<h4 id="其他第三方实现"><a href="#其他第三方实现" class="headerlink" title="其他第三方实现:"></a>其他第三方实现:</h4><ul>
+<li>zookeeper</li>
+<li>redis</li>
+<li>etcd</li>
+</ul>
 
     </div>
 
@@ -215,7 +275,8 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/adb/" rel="tag"># adb</a>
+              <a href="/tags/someip-sd/" rel="tag"># someip-sd</a>
+              <a href="/tags/service-discovery/" rel="tag"># service discovery</a>
           </div>
 
         
@@ -224,13 +285,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2021/11/24/Linux-Kernel-%E7%BC%96%E8%AF%91%E8%B0%83%E8%AF%95/" rel="prev" title="Linux Kernel 编译调试（Qemu + gdb）">
-      <i class="fa fa-chevron-left"></i> Linux Kernel 编译调试（Qemu + gdb）
+    <a href="/2021/12/16/manjaro-swap/" rel="prev" title="manjaro_swap">
+      <i class="fa fa-chevron-left"></i> manjaro_swap
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2021/12/05/%E5%B8%B8%E7%94%A8%E4%BD%8D%E8%BF%90%E7%AE%97/" rel="next" title="常用位运算">
-      常用位运算 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -289,7 +347,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83"><span class="nav-number">1.</span> <span class="nav-text">环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ADB%E9%93%BE%E6%8E%A5%E6%89%8B%E6%9C%BA"><span class="nav-number">2.</span> <span class="nav-text">ADB链接手机</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81%E6%89%93%E5%BC%80%E6%8B%A8%E5%8F%B7%E7%95%8C%E9%9D%A2-%E8%BE%93%E5%85%A5-2846579-%E3%80%82%E8%87%AA%E5%8A%A8%E8%BF%9B%E5%85%A5%E5%B7%A5%E7%A8%8B%E8%8F%9C%E5%8D%95-%E9%80%89%E6%8B%A9%E5%90%8E%E5%8F%B0%E8%AE%BE%E7%BD%AE%E2%80%94%E2%80%94-gt-usb%E7%AB%AF%E5%8F%A3%E8%AE%BE%E7%BD%AE%E2%80%94%E2%80%94-gt-%E7%94%9F%E4%BA%A7%E6%A8%A1%E5%BC%8F"><span class="nav-number">2.1.</span> <span class="nav-text">1、打开拨号界面,输入: *#*#2846579#*#*。自动进入工程菜单,选择后台设置——&gt;usb端口设置——&gt;生产模式.</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81%E6%89%93%E5%BC%80%E8%B0%83%E8%AF%95"><span class="nav-number">2.2.</span> <span class="nav-text">2、打开调试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%E3%80%81USB%E8%BF%9E%E6%8E%A5%E6%96%B9%E5%BC%8F"><span class="nav-number">2.3.</span> <span class="nav-text">3、USB连接方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4%E3%80%81%E5%9C%A8%E8%AE%BE%E7%BD%AE%E4%B8%AD%E6%90%9C%E7%B4%A2HDB%EF%BC%8C%E6%89%93%E5%BC%80%E5%85%81%E8%AE%B8HiSuite%E9%80%9A%E8%BF%87HDB%E8%BF%9E%E6%8E%A5%E8%AE%BE%E5%A4%87"><span class="nav-number">2.4.</span> <span class="nav-text">4、在设置中搜索HDB，打开允许HiSuite通过HDB连接设备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5%E3%80%81%E5%9B%9E%E5%88%B0adb%E5%91%BD%E4%BB%A4%E4%B8%8B%E6%9F%A5%E7%9C%8B%E6%98%AF%E5%90%A6%E5%B7%B2%E7%BB%8F%E8%BF%9E%E6%8E%A5%E4%B8%8A%E4%BA%86"><span class="nav-number">2.5.</span> <span class="nav-text">5、回到adb命令下查看是否已经连接上了</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0"><span class="nav-number">1.</span> <span class="nav-text">服务发现</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%B5%81%E7%A8%8B"><span class="nav-number">1.1.</span> <span class="nav-text">基本流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%A8%E5%86%8C"><span class="nav-number">1.2.</span> <span class="nav-text">注册</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%87%AA%E4%B8%BB%E6%B3%A8%E5%86%8C"><span class="nav-number">1.2.1.</span> <span class="nav-text">自主注册</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E6%96%B9%E6%B3%A8%E5%86%8C"><span class="nav-number">1.2.2.</span> <span class="nav-text">第三方注册</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%91%E7%8E%B0"><span class="nav-number">1.3.</span> <span class="nav-text">发现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E7%9A%84%E5%8F%91%E7%8E%B0%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.3.1.</span> <span class="nav-text">常用的发现模式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%8F%91%E7%8E%B0%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.3.1.1.</span> <span class="nav-text">客户端发现模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%8F%91%E7%8E%B0%E6%A8%A1%E5%BC%8F%E3%80%82"><span class="nav-number">1.3.1.2.</span> <span class="nav-text">服务端发现模式。</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%A1%88"><span class="nav-number">1.3.2.</span> <span class="nav-text">实现方案</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#file"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">file</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E7%AC%AC%E4%B8%89%E6%96%B9%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.3.2.2.</span> <span class="nav-text">其他第三方实现:</span></a></li></ol></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

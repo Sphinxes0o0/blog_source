@@ -20,34 +20,30 @@
     var CONFIG = {"hostname":"4soos.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="位运算符 &amp; : 对应位都为1时，结果为1  | : 对应位存在一个1时，结果为1  ^ : 对应位不同时，结果为1    异或运算的逆元素是本身, 即两次异或同一个数，结果不变： a ^ b ^ b &#x3D; a   ~ : 对一个数进行单目运算，把这个数的补码中的 0 和 1 全部取反，有符号整数的符号位在这 ~ 运算中同样会取反。   补码： 在二进制表示下，正数和 0 的补码为其本身，负">
-<meta property="og:type" content="article">
-<meta property="og:title" content="常用位运算">
-<meta property="og:url" content="https://4soos.github.io/2021/12/05/%E5%B8%B8%E7%94%A8%E4%BD%8D%E8%BF%90%E7%AE%97/index.html">
+  <meta name="description" content="C&#x2F;CPP, Linux, Notes">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Young&#39;s Blog">
+<meta property="og:url" content="https://4soos.github.io/page/3/index.html">
 <meta property="og:site_name" content="Young&#39;s Blog">
-<meta property="og:description" content="位运算符 &amp; : 对应位都为1时，结果为1  | : 对应位存在一个1时，结果为1  ^ : 对应位不同时，结果为1    异或运算的逆元素是本身, 即两次异或同一个数，结果不变： a ^ b ^ b &#x3D; a   ~ : 对一个数进行单目运算，把这个数的补码中的 0 和 1 全部取反，有符号整数的符号位在这 ~ 运算中同样会取反。   补码： 在二进制表示下，正数和 0 的补码为其本身，负">
+<meta property="og:description" content="C&#x2F;CPP, Linux, Notes">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2021-12-05T05:57:32.000Z">
-<meta property="article:modified_time" content="2021-12-05T07:29:59.409Z">
 <meta property="article:author" content="Young">
-<meta property="article:tag" content="bit op">
-<meta property="article:tag" content="c&#x2F;cpp">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://4soos.github.io/2021/12/05/%E5%B8%B8%E7%94%A8%E4%BD%8D%E8%BF%90%E7%AE%97/">
+<link rel="canonical" href="https://4soos.github.io/page/3/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : false,
-    isPost : true,
+    isHome : true,
+    isPost : false,
     lang   : 'en'
   };
 </script>
 
-  <title>常用位运算 | Young's Blog</title>
+  <title>Young's Blog</title>
   
 
 
@@ -154,10 +150,9 @@
         <div class="content-wrap">
           
 
-          <div class="content post posts-expand">
+          <div class="content index posts-expand">
             
-
-    
+      
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
@@ -173,9 +168,10 @@
       <meta itemprop="name" content="Young's Blog">
     </span>
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          常用位运算
-        </h1>
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/12/05/%E5%B8%B8%E7%94%A8%E4%BD%8D%E8%BF%90%E7%AE%97/" class="post-title-link" itemprop="url">常用位运算</a>
+        </h2>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -199,7 +195,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="位运算符"><a href="#位运算符" class="headerlink" title="位运算符"></a>位运算符</h2><ul>
+          <h2 id="位运算符"><a href="#位运算符" class="headerlink" title="位运算符"></a>位运算符</h2><ul>
 <li><p><code>&amp;</code> : 对应位都为1时，结果为1</p>
 </li>
 <li><p><code>|</code> : 对应位存在一个1时，结果为1</p>
@@ -342,38 +338,25 @@
 
 
 
+      
     </div>
 
     
     
     
-
       <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/bit-op/" rel="tag"># bit op</a>
-              <a href="/tags/c-cpp/" rel="tag"># c/cpp</a>
-          </div>
-
-        
-
-
-        
-    <div class="post-nav">
-      <div class="post-nav-item">
-    <a href="/2021/12/05/huawei-adb/" rel="prev" title="huawei adb">
-      <i class="fa fa-chevron-left"></i> huawei adb
-    </a></div>
-      <div class="post-nav-item">
-    <a href="/2021/12/16/manjaro-swap/" rel="next" title="manjaro_swap">
-      manjaro_swap <i class="fa fa-chevron-right"></i>
-    </a></div>
-    </div>
+        <div class="post-eof"></div>
       </footer>
-    
   </article>
   
   
   
+
+
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+  </nav>
 
 
 
@@ -425,7 +408,6 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%8D%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">1.</span> <span class="nav-text">位运算符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%8D%E5%90%88%E8%B5%8B%E5%80%BC%E4%BD%8D%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">2.</span> <span class="nav-text">复合赋值位运算符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BA%94%E7%94%A8"><span class="nav-number">3.</span> <span class="nav-text">应用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E8%BF%90%E7%AE%97"><span class="nav-number">3.1.</span> <span class="nav-text">常用运算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A1%A8%E7%A4%BA%E9%9B%86%E5%90%88"><span class="nav-number">3.2.</span> <span class="nav-text">表示集合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E9%99%85%E4%BB%A3%E7%A0%81"><span class="nav-number">3.3.</span> <span class="nav-text">实际代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C-STL-bitset-%E5%AE%B9%E5%99%A8"><span class="nav-number">4.</span> <span class="nav-text">C++ STL bitset 容器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#bitset-%E5%AE%B9%E5%99%A8%E7%9A%84%E5%A3%B0%E6%98%8E"><span class="nav-number">4.1.</span> <span class="nav-text">bitset 容器的声明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%B9bitset%E5%AE%B9%E5%99%A8%E7%9A%84%E4%B8%80%E4%BA%9B%E6%93%8D%E4%BD%9C"><span class="nav-number">4.2.</span> <span class="nav-text">对bitset容器的一些操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%E3%80%81%E5%B8%B8%E7%94%A8%E7%9A%84%E6%93%8D%E4%BD%9C%E5%87%BD%E6%95%B0"><span class="nav-number">4.2.1.</span> <span class="nav-text">1、常用的操作函数</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#count-any-none"><span class="nav-number">4.2.1.1.</span> <span class="nav-text">count(), any(), none()</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#set-reset-flip"><span class="nav-number">4.2.1.2.</span> <span class="nav-text">set(), reset(), flip()</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%E3%80%81%E4%BD%8D%E8%BF%90%E7%AE%97%E6%93%8D%E4%BD%9C%E5%9C%A8bitset%E4%B8%AD%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="nav-number">4.2.2.</span> <span class="nav-text">2、位运算操作在bitset中的实现</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
