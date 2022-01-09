@@ -17,7 +17,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"4soos.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"4soos.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="C&#x2F;CPP, Linux, Notes">
@@ -156,7 +156,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://4soos.github.io/2021/12/26/service-discovery/">
+    <link itemprop="mainEntityOfPage" href="https://4soos.github.io/2022/01/08/%E5%AF%B9%E8%B1%A1%E5%88%9B%E5%BB%BA%E9%99%90%E5%88%B6%E5%9C%A8%E5%A0%86%E6%88%96%E6%A0%88/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -170,7 +170,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/12/26/service-discovery/" class="post-title-link" itemprop="url">service-discovery</a>
+            <a href="/2022/01/08/%E5%AF%B9%E8%B1%A1%E5%88%9B%E5%BB%BA%E9%99%90%E5%88%B6%E5%9C%A8%E5%A0%86%E6%88%96%E6%A0%88/" class="post-title-link" itemprop="url">对象创建限制在堆或栈</a>
         </h2>
 
         <div class="post-meta">
@@ -179,19 +179,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2021-12-26 17:46:21 / Modified: 17:53:24" itemprop="dateCreated datePublished" datetime="2021-12-26T17:46:21+08:00">2021-12-26</time>
+              <time title="Created: 2022-01-08 23:20:16" itemprop="dateCreated datePublished" datetime="2022-01-08T23:20:16+08:00">2022-01-08</time>
             </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/concepts/" itemprop="url" rel="index"><span itemprop="name">concepts</span></a>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
                 </span>
-            </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-01-09 23:25:34" itemprop="dateModified" datetime="2022-01-09T23:25:34+08:00">2022-01-09</time>
+              </span>
 
           
 
@@ -204,64 +201,25 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="服务发现"><a href="#服务发现" class="headerlink" title="服务发现"></a>服务发现</h1><h2 id="基本流程"><a href="#基本流程" class="headerlink" title="基本流程"></a>基本流程</h2><ul>
-<li><p>Register, 服务启动时候进行注册</p>
-</li>
-<li><p>Query, 查询已注册服务信息</p>
-</li>
-<li><p>Healthy Check,确认服务状态是否健康</p>
-</li>
-</ul>
-<p>整个过程很简单。大致就是在服务启动的时候，先去进行注册，并且定时反馈本身功能是否正常。由服务发现机制统一负责维护一份正确或者可用的服务清单。因此，服务本身需要能随时接受查下，反馈调用方服务所要的信息。</p>
-<h2 id="注册"><a href="#注册" class="headerlink" title="注册"></a>注册</h2><p>一整套服务发现机制顺利运行，需要维护一份可用的服务列表。包含服务注册与移除功能，以及健康检查。</p>
-<p>常见的注册模式</p>
-<h3 id="自主注册"><a href="#自主注册" class="headerlink" title="自主注册"></a>自主注册</h3><p>自主注册模式，由服务(client)本身来维护。<br>每个服务启动后，需要到统一的服务注册中心进行注册登记，服务正常终止后，也可以到注册中心移除自身的注册记录。<br>在服务执行过程中，通过不断的发送心跳信息，来通知注册中心，本服务运行正常。注册中心只要超过一定的时间没有收到心跳消息，<br>就可以将这个服务状态判断为异常，进而移除该服务的注册记录。</p>
-<h3 id="第三方注册"><a href="#第三方注册" class="headerlink" title="第三方注册"></a>第三方注册</h3><p>这个模式与自主注册相比，区别是健康检查的动作不是由服务本身(client)来负责，而是由第三方服务来确认。<br>因为有时候服务自身发送心跳信息的方式并不精确，因为可能服务本身已经存在故障，某些接口功能不可用，<br>但仍然可以不断的发送心跳信息，导致注册中心没有发觉该服务已经异常，从而源源不断的将流量打到已经异常的服务上来。<br>所以, 确认服务是否正常运转的健康检查机制，就不能只依靠心跳，必须通过其它第三方的验证，不断的从外部来确认服务本身的健康状态。</p>
-<p>在实际应用中, 需要根据需求合理搭配服务, 和管理机制.</p>
-<h2 id="发现"><a href="#发现" class="headerlink" title="发现"></a>发现</h2><p>发现机制主要包括三种：</p>
+          <h3 id="如何限制类的对象只能在堆上创建？如何限制对象只能在栈上创建？"><a href="#如何限制类的对象只能在堆上创建？如何限制对象只能在栈上创建？" class="headerlink" title="如何限制类的对象只能在堆上创建？如何限制对象只能在栈上创建？"></a>如何限制类的对象只能在堆上创建？如何限制对象只能在栈上创建？</h3><p>C++ 中的类的对象的建立分为两种：静态建立、动态建立。</p>
 <ul>
-<li><p>服务提供者：<br>服务启动时将服务信息注册到注册中心，服务退出时将注册中心的服务信息删除掉。</p>
+<li><p>静态建立：<br>由编译器为对象在栈空间上分配内存，直接调用类的构造函数创建对象。例如：A a;</p>
 </li>
-<li><p>服务消费者：<br>从服务注册表获取服务提供者的最新网络位置等服务信息，维护与服务提供者之间的通信。</p>
-</li>
-<li><p>注册中心：<br>服务提供者和服务消费者之间的一个桥梁</p>
+<li><p>动态建立：<br>使用 <code>new</code> 关键字在堆空间上创建对象，底层首先调用 <code>operator new()</code> 函数，在堆空间上寻找合适的内存并分配；然后，调用类的构造函数创建对象。<br>例如：<code>A *p = new A()</code>;</p>
 </li>
 </ul>
-<p>服务发现机制的关键部分是注册中心。注册中心提供管理和查询服务注册信息的API。<br>当服务提供者的实例发生变更时（新增/删除服务），服务注册表更新最新的状态列表，并将其最新列表以适当的方式通知给服务消费者。</p>
-<h3 id="常用的发现模式"><a href="#常用的发现模式" class="headerlink" title="常用的发现模式"></a>常用的发现模式</h3><h4 id="客户端发现模式"><a href="#客户端发现模式" class="headerlink" title="客户端发现模式"></a>客户端发现模式</h4><p>首先要进行的是到服务注册中心获取服务列表，然后再根据调用端本地的负载均衡策略，进行服务调用:</p>
-<ul>
-<li><p>1.服务提供者向注册中心进行注册，提交自己的相关信息 (register)</p>
-</li>
-<li><p>2.服务消费者定期从注册中心获取服务提供者列表 (keep alive)</p>
-</li>
-<li><p>3.服务消费者通过自身的负载均衡算法，在服务提供者列表里面选择一个合适的服务提供者，进行访问</p>
-</li>
-</ul>
-<h4 id="服务端发现模式。"><a href="#服务端发现模式。" class="headerlink" title="服务端发现模式。"></a>服务端发现模式。</h4><ul>
-<li>1 服务提供者向注册中心进行服务注册 </li>
-<li>2 注册中心提供负载均衡功能， </li>
-<li>3 服务消费者去请求注册中心，由注册中心根据服务提供列表的健康情况，选择合适的服务提供者供服务消费者调用</li>
-</ul>
-<blockquote>
-<p>本质区别在于，客户端是否保存服务列表信息</p>
-</blockquote>
-<h3 id="实现方案"><a href="#实现方案" class="headerlink" title="实现方案"></a>实现方案</h3><h4 id="file"><a href="#file" class="headerlink" title="file"></a>file</h4><p>以文件的形式实现服务发现，这是一个比较简单的方案。<br>其基本原理就是将服务提供者的信息(ip:port)写入文件中，服务消费者加载该文件，<br>获取服务提供者的信息，根据一定的策略，进行访问。</p>
-<p>需要注意的是，因为以文件形式提供服务发现，服务消费者要定期的去访问该文件，<br>以获得最新的服务提供者列表，这里有个小优化点，就是可以有个线程定时去做该任务，<br>首先去用该文件的最后一次修改时间跟服务上一次读取文件时候存储的修改时间做对比，<br>如果时间一致，表明文件未做修改，那么就不需要重新做加载了，反之，重新加载文件。</p>
-<p>文件方式实现服务发现，其特点显而易见：</p>
-<ul>
-<li><p>优点：<br>实现简单，去中心化</p>
-</li>
-<li><p>缺点：<br>需要服务消费者去定时操作，如果某一个文件推送失败，那么就会造成异常现象</p>
-</li>
-</ul>
-<blockquote>
-<p>SOME/IP 就是通过文件的方式实现.</p>
-</blockquote>
-<h4 id="其他第三方实现"><a href="#其他第三方实现" class="headerlink" title="其他第三方实现:"></a>其他第三方实现:</h4><ul>
-<li>zookeeper</li>
-<li>redis</li>
-<li>etcd</li>
-</ul>
+<h3 id="限制对象只能建立在堆上："><a href="#限制对象只能建立在堆上：" class="headerlink" title="限制对象只能建立在堆上："></a>限制对象只能建立在堆上：</h3><p>最直观的思想：<br>避免直接调用类的构造函数，因为对象静态建立时，会调用类的构造函数创建对象。<br>但是直接将类的构造函数设为私有并不可行，因为当构造函数设置为私有后，不能在类的外部调用构造函数来构造对象，只能用 <code>new</code> 来建立对象。<br>但是由于 new 创建对象时，底层也会调用类的构造函数，将构造函数设置为私有后，那就无法在类的外部使用 <code>new</code> 创建对象了。因此，这种方法不可行。</p>
+<h4 id="解决方法-1："><a href="#解决方法-1：" class="headerlink" title="解决方法 1："></a>解决方法 1：</h4><p>将析构函数设置为私有。<br>原因：静态对象建立在栈上，是由编译器分配和释放内存空间，编译器为对象分配内存空间时，会对类的非静态函数进行检查，即编译器会检查析构函数的访问性。<br>当析构函数设为私有时，编译器创建的对象就无法通过访问析构函数来释放对象的内存空间，因此，编译器不会在栈上为对象分配内存。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">A</span>() &#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">destory</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">delete</span> <span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    ~<span class="built_in">A</span>()</span><br><span class="line">    &#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>该方法存在的问题：</p>
+<p>用 <code>new</code> 创建的对象，通常会使用 <code>delete</code> 释放该对象的内存空间，但此时类的外部无法调用析构函数，因此类内必须定义一个 <code>destory()</code> 函数，用来释放 new 创建的对象。</p>
+<p>无法解决继承问题，因为如果这个类作为基类，析构函数要设置成<code>virtual</code>，然后在派生类中重写该函数，来实现多态。但此时，析构函数是私有的，派生类中无法访问。</p>
+<h4 id="解决方法-2："><a href="#解决方法-2：" class="headerlink" title="解决方法 2："></a>解决方法 2：</h4><p>构造函数设置为 <code>protected</code>，并提供一个 <code>public</code> 的静态函数来完成构造，而不是在类的外部使用 new 构造；<br>将析构函数设置为 <code>protected</code> 。<br>原因：类似于单例模式，也保证了在派生类中能够访问析构函数。通过调用 <code>create()</code> 函数在堆上创建对象。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">    <span class="built_in">A</span>() &#123;&#125;</span><br><span class="line">    ~<span class="built_in">A</span>() &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">static</span> A *<span class="title">create</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">A</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">destory</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">delete</span> <span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="限制对象只能建立在栈上："><a href="#限制对象只能建立在栈上：" class="headerlink" title="限制对象只能建立在栈上："></a>限制对象只能建立在栈上：</h3><p>解决方法：将 <code>operator new()</code> 设置为私有。</p>
+<p>原因：当对象建立在堆上时，是采用 <code>new</code> 的方式进行建立，其底层会调用<code> operator new()</code> 函数，<br>因此只要对该函数加以限制，就能够防止对象建立在堆上。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> *<span class="keyword">operator</span> <span class="title">new</span><span class="params">(<span class="keyword">size_t</span> t)</span> </span>&#123;&#125;    <span class="comment">// 注意函数的第一个参数和返回值都是固定的</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="keyword">operator</span> <span class="title">delete</span><span class="params">(<span class="keyword">void</span> *ptr)</span> </span>&#123;&#125; <span class="comment">// 重载了 new 就需要重载 delete</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">A</span>() &#123;&#125;</span><br><span class="line">    ~<span class="built_in">A</span>() &#123;&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -280,7 +238,7 @@
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -345,7 +303,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-count">13</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -358,7 +316,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-count">20</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -385,7 +343,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -395,6 +353,26 @@
   </div>
 
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
 
 
 

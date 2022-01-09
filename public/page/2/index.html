@@ -17,7 +17,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"4soos.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"4soos.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="C&#x2F;CPP, Linux, Notes">
@@ -156,7 +156,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://4soos.github.io/2021/12/16/manjaro-swap/">
+    <link itemprop="mainEntityOfPage" href="https://4soos.github.io/2022/01/06/vSOMEIP-source-reading/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -170,7 +170,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/12/16/manjaro-swap/" class="post-title-link" itemprop="url">manjaro_swap</a>
+            <a href="/2022/01/06/vSOMEIP-source-reading/" class="post-title-link" itemprop="url">vSOMEIP source reading</a>
         </h2>
 
         <div class="post-meta">
@@ -179,24 +179,9 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
+              
 
-              <time title="Created: 2021-12-16 17:04:07" itemprop="dateCreated datePublished" datetime="2021-12-16T17:04:07+08:00">2021-12-16</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-12-26 17:31:08" itemprop="dateModified" datetime="2021-12-26T17:31:08+08:00">2021-12-26</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">Linux编程</span></a>
-                </span>
+              <time title="Created: 2022-01-06 02:06:23 / Modified: 02:14:13" itemprop="dateCreated datePublished" datetime="2022-01-06T02:06:23+08:00">2022-01-06</time>
             </span>
 
           
@@ -210,39 +195,220 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <blockquote>
-<p>起因： 编译AOSP源码， 提示最小内存为 16gb</p>
+          <h1 id="VSOMEIP-源码学习分享-之-手摸手编译安装过源码"><a href="#VSOMEIP-源码学习分享-之-手摸手编译安装过源码" class="headerlink" title="VSOMEIP 源码学习分享 之 手摸手编译安装过源码"></a>VSOMEIP 源码学习分享 之 手摸手编译安装过源码</h1><h2 id="Content"><a href="#Content" class="headerlink" title="Content"></a>Content</h2><ol>
+<li><p>源码结构</p>
+</li>
+<li><p>环境和编译</p>
+</li>
+<li><p>核心内容  </p>
+</li>
+<li><p>1 模块  </p>
+</li>
+<li><p>2 配置</p>
+</li>
+</ol>
+<h2 id="1-源码结构"><a href="#1-源码结构" class="headerlink" title="1. 源码结构"></a>1. 源码结构</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">dev@dev:~/someip_space/vsomeip$ tree . -L 1</span><br><span class="line">.</span><br><span class="line">├── Android.bp</span><br><span class="line">├── AUTHORS</span><br><span class="line">├── CHANGES</span><br><span class="line">├── CMakeLists.txt</span><br><span class="line">├── config               --&gt; 示例配置文件</span><br><span class="line">├── documentation        --&gt; 使用文档</span><br><span class="line">├── examples             --&gt; Demo</span><br><span class="line">├── exportmap.gcc        --&gt; 控制动态库的函数导出</span><br><span class="line">├── implementation       --&gt; 逻辑代码实现</span><br><span class="line">├── interface            --&gt; 代码接口设计</span><br><span class="line">├── LICENSE</span><br><span class="line">├── LICENSE_boost</span><br><span class="line">├── README.md</span><br><span class="line">├── <span class="built_in">test</span>                 --&gt; 测试代码</span><br><span class="line">├── tools                --&gt; some_ctrl 工具</span><br><span class="line">├── vsomeip3Config.cmake.in            --|</span><br><span class="line">├── vsomeip3ConfigVersion.cmake.in       |</span><br><span class="line">├── vsomeip3.pc.in                       |</span><br><span class="line">├── vsomeipConfig.cmake.in               | ==&gt; cmake 配置</span><br><span class="line">├── vsomeipConfigVersion.cmake.in        |</span><br><span class="line">├── vsomeip.pc.in                        |</span><br><span class="line">└── vsomeip.xml                        --|</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>核心代码都在 implementation</p>
 </blockquote>
-<p>本机环境：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">████████  ████████  ████████     young@dev</span><br><span class="line">████████  ████████  ████████     young@dev</span><br><span class="line">████████  ████████  ████████     Uptime: 3h 52m</span><br><span class="line">                                 Shell: bash 5.1.12</span><br><span class="line">████████  ████████  ████████     DE: GNOME 41.2</span><br><span class="line">████████  ████████  ████████     GTK Theme: Matcha-light-sea [GTK2/3]</span><br><span class="line">                                 Icon Theme: Papirus-Adapta-Maia</span><br><span class="line">████████  ████████  ████████     CPU: AMD Ryzen 7 5700G with Radeon Graphics @ 16x 3.8GHz</span><br><span class="line">██████████████████  ████████     GPU: AMD/ATI</span><br><span class="line">████████  ████████  ████████     Kernel: x86_64 Linux 5.15.7-1-MANJARO</span><br><span class="line">██████████████████  ████████     Resolution: 2560x1440</span><br><span class="line">████████  ████████  ████████     WM Theme: </span><br><span class="line">██████████████████  ████████     Disk: 383G / 946G (43%)</span><br><span class="line">██████████████████  ████████     RAM: 3558MiB / 15448MiB</span><br><span class="line">████████  ████████  ████████     Packages: 1375</span><br><span class="line">                                 OS: Manjaro 21.2.0 Qonos</span><br><span class="line">████████  ████████  ████████     Font: Noto Sans 12</span><br><span class="line">████████  ████████  ████████     WM: Mutter</span><br></pre></td></tr></table></figure>
-
-<h2 id="配置及安装相应软件"><a href="#配置及安装相应软件" class="headerlink" title="配置及安装相应软件"></a>配置及安装相应软件</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo yay -Syyu</span><br><span class="line"></span><br><span class="line">yay -S lineageos-devel</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h2 id="建立交换文件"><a href="#建立交换文件" class="headerlink" title="建立交换文件"></a>建立交换文件</h2><p>使用dd去创建一个由你自己指定大小的交换文件。例如，创建一个 20 GiB 的交换文件:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo dd <span class="keyword">if</span>=/dev/zero of=/swapfile bs=1G count=20 status=progress</span><br></pre></td></tr></table></figure>
-
-<p>为交换文件设置权限（交换文件全局可读是一个巨大的本地漏洞）：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo chmod 600 /swapfile</span><br></pre></td></tr></table></figure>
-
-<p>创建正确大小的文件后，将其格式化用来作为交换文件：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo mkswap /swapfile</span><br></pre></td></tr></table></figure>
-
-<p>启用交换文件：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo swapon /swapfile</span><br></pre></td></tr></table></figure>
-
-<p>最后，编辑 /etc/fstab，在为交换文件添加一个条目：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/swapfile none swap defaults 0 0</span><br></pre></td></tr></table></figure>
+<h3 id="implementation"><a href="#implementation" class="headerlink" title="implementation"></a>implementation</h3><p><img src="../imgs/00_overview_source_arch.png" alt="arch"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">dev@dev:~/someip_space/vsomeip/implementation$ tree . -L 1</span><br><span class="line">.</span><br><span class="line">├── compat                 --&gt; 3.x 和 2.x 兼容层</span><br><span class="line">├── configuration          --&gt; 配置模块: 配置读取,加载; 插件配置</span><br><span class="line">├── e2e_protection         --&gt; e2e模块</span><br><span class="line">├── endpoints              --&gt; client/server, tcp/udp, TP endpoint 实现</span><br><span class="line">├── helper                 --&gt; boost 兼容层</span><br><span class="line">├── logger                 --&gt; logger</span><br><span class="line">├── message                --&gt; message, payload, (反)序列化 实现</span><br><span class="line">├── plugin                 --&gt; 插件模块: 插件管理</span><br><span class="line">├── routing                --&gt; 路由模块 </span><br><span class="line">├── runtime                --&gt; 运行时: 管理 APP , runtime 资源</span><br><span class="line">├── security               --&gt; 安全模块: policy, credentials </span><br><span class="line">├── service_discovery      --&gt; 服务发现: </span><br><span class="line">                                    发现注册模块, </span><br><span class="line">                                    IPv4/IPv6 Options, </span><br><span class="line">                                    负载均衡, </span><br><span class="line">                                    远程订阅</span><br><span class="line">├── tracing                --&gt; tracing: 配置 dlt-daemon</span><br><span class="line">└── utility                --&gt; 通用工具</span><br></pre></td></tr></table></figure>
 
 
 
+<h2 id="2-环境和编译"><a href="#2-环境和编译" class="headerlink" title="2. 环境和编译"></a>2. 环境和编译</h2><h3 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h3><p>OS环境:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">lsb_release -a</span><br><span class="line">No LSB modules are available.</span><br><span class="line">Distributor ID:	Ubuntu</span><br><span class="line">Description:	Ubuntu 21.04</span><br><span class="line">Release:	21.04</span><br><span class="line">Codename:	hirsute</span><br></pre></td></tr></table></figure>
 
+<blockquote>
+<p>实测 18.04 也没有问题, 官方推荐14.04 及以上</p>
+</blockquote>
+<h4 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h4><ul>
+<li>CMake</li>
+</ul>
+<blockquote>
+<p>ref : <a target="_blank" rel="noopener" href="https://apt.kitware.com/">https://apt.kitware.com/</a></p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># For Ubuntu Bionic Beaver (18.04) and newer:</span></span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install gpg wget</span><br><span class="line"></span><br><span class="line"><span class="comment"># For Ubuntu Xenial Xerus (16.04):</span></span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install apt-transport-https wget</span><br><span class="line"></span><br><span class="line"><span class="comment"># Obtain a copy of our signing key:</span></span><br><span class="line">wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2&gt;/dev/null | gpg --dearmor - | sudo tee /usr/share/keyrings/kitware-archive-keyring.gpg &gt;/dev/null</span><br><span class="line"></span><br><span class="line"><span class="comment"># Add the repository to your sources list and update</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># For Ubuntu Focal Fossa (20.04):</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;deb [signed-by=/usr/share/keyrings/kitware-archive-keyring.gpg] https://apt.kitware.com/ubuntu/ focal main&#x27;</span> | sudo tee /etc/apt/sources.list.d/kitware.list &gt;/dev/null</span><br><span class="line"></span><br><span class="line">sudo apt-get update</span><br><span class="line"></span><br><span class="line"><span class="comment"># For Ubuntu Bionic Beaver (18.04):</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;deb [signed-by=/usr/share/keyrings/kitware-archive-keyring.gpg] https://apt.kitware.com/ubuntu/ bionic main&#x27;</span> | sudo tee /etc/apt/sources.list.d/kitware.list &gt;/dev/null</span><br><span class="line"></span><br><span class="line">sudo apt-get update</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># For Ubuntu Xenial Xerus (16.04):</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;deb [signed-by=/usr/share/keyrings/kitware-archive-keyring.gpg] https://apt.kitware.com/ubuntu/ xenial main&#x27;</span> | sudo tee /etc/apt/sources.list.d/kitware.list &gt;/dev/null</span><br><span class="line"></span><br><span class="line">sudo apt-get update</span><br><span class="line"></span><br><span class="line"><span class="comment"># Install the kitware-archive-keyring package to ensure that your keyring stays up to date as we rotate our keys:</span></span><br><span class="line">sudo rm /usr/share/keyrings/kitware-archive-keyring.gpg</span><br><span class="line">sudo apt-get install kitware-archive-keyring</span><br><span class="line"></span><br><span class="line"><span class="comment"># install cmake</span></span><br><span class="line">sudo apt-get install cmake</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
+<ul>
+<li><p>g++ / clang++</p>
+<p>需要支持 C++11 , 因为使用了很多 C++11 的特性, 如 <code>std::bind</code></p>
+</li>
+<li><p>boost 1.71</p>
+<p>1.71 刚好和 DoIP boost版本保持一致</p>
+<ul>
+<li><p>repo, (master branch) </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Ethernet/boost_1_71_0</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<h5 id="可选"><a href="#可选" class="headerlink" title="可选"></a>可选</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 编译文档</span></span><br><span class="line"></span><br><span class="line">sudo apt install -y asciidoc source-highlight doxygen graphviz</span><br><span class="line"></span><br><span class="line"><span class="comment"># pkg-config 配合make install</span></span><br><span class="line"><span class="comment"># Return metainformation about installed libraries</span></span><br><span class="line"></span><br><span class="line">sudo apt install -y pkg-config</span><br></pre></td></tr></table></figure>
 
+<h3 id="编译-amp-安装"><a href="#编译-amp-安装" class="headerlink" title="编译&amp;安装"></a>编译&amp;安装</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> vsomeip-3.1.20/</span><br><span class="line">mkdir build;<span class="built_in">cd</span> build;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 默认配置</span></span><br><span class="line">cmake ..</span><br><span class="line"></span><br><span class="line"><span class="comment">##  自定义</span></span><br><span class="line"><span class="comment"># install path</span></span><br><span class="line">cmake -DCMAKE_INSTALL_PREFIX:PATH=<span class="variable">$YOUR_PATH</span> ..</span><br><span class="line"><span class="comment"># ip addr</span></span><br><span class="line">cmake -DUNICAST_ADDRESS=&lt;YOUR IP ADDRESS&gt; ..</span><br><span class="line"><span class="comment"># diagnosis addr</span></span><br><span class="line">cmake -DDIAGNOSIS_ADDRESS=&lt;YOUR DIAGNOSIS ADDRESS&gt; ..</span><br><span class="line"><span class="comment"># configuration folder</span></span><br><span class="line">cmake -DDEFAULT_CONFIGURATION_FOLDER=&lt;DEFAULT CONFIGURATION FOLDER&gt; ..</span><br><span class="line"><span class="comment"># default configuration file</span></span><br><span class="line">cmake -DDEFAULT_CONFIGURATION_FILE=&lt;DEFAULT CONFIGURATION FILE&gt; ..</span><br><span class="line"><span class="comment"># signal handling</span></span><br><span class="line">cmake -DENABLE_SIGNAL_HANDLING=1 ..</span><br><span class="line"></span><br><span class="line">make</span><br><span class="line"></span><br><span class="line">sudo make install</span><br><span class="line"></span><br><span class="line"><span class="comment"># tool: vsomeip_ctrl</span></span><br><span class="line">make vsomeip_ctrl</span><br></pre></td></tr></table></figure>
 
-
-
-
-
+<h2 id="3-核心内容"><a href="#3-核心内容" class="headerlink" title="3. 核心内容"></a>3. 核心内容</h2><h3 id="3-1-模块"><a href="#3-1-模块" class="headerlink" title="3.1 模块"></a>3.1 模块</h3><p>自上而下来看可以划分为以下:</p>
+<ul>
+<li><p>runtime</p>
+</li>
+<li><p>application</p>
+</li>
+<li><p>messgae</p>
+</li>
+<li><p>payload</p>
+</li>
+</ul>
+<h4 id="runtime"><a href="#runtime" class="headerlink" title="runtime"></a><strong>runtime</strong></h4><p><img src="../imgs/vSOMEIP_source_runtime.png" alt="runtime"></p>
+<p>上图为runtime 类在代码中与其他类的关系.</p>
+<p>这个类主要用于创建和管理其他所有公共资源和获取runtime属性。<br>管理的资源包括:</p>
+<ul>
+<li><p>application</p>
+</li>
+<li><p>message</p>
+</li>
+<li><p>payload</p>
+</li>
+</ul>
+<p>主要的功能函数:</p>
+<ul>
+<li><p>get</p>
+<ul>
+<li><code>runtime</code></li>
+<li><code>application</code></li>
+</ul>
+</li>
+<li><p>set/get_property:</p>
+<ul>
+<li><code>map&lt;string, string&gt;</code></li>
+</ul>
+</li>
+<li><p>create_xxx</p>
+<ul>
+<li><code>application</code></li>
+<li><code>message</code></li>
+<li><code>request</code></li>
+<li><code>response</code></li>
+<li><code>notification</code></li>
+<li><code>payload</code></li>
+</ul>
+</li>
+<li><p>remove_application</p>
+</li>
+</ul>
+<h4 id="application"><a href="#application" class="headerlink" title="application"></a><strong>application</strong></h4><p><strong>最核心的一个部分</strong></p>
+<p>每个客户端都存在且仅存在一份。<br>Application可以通过Runtime的接口来实例化。<br>管理着vSomeIP客户端的生命周期和生命周期内的所有通讯。</p>
+<p>管理的资源:</p>
+<ul>
+<li>plugin</li>
+<li>configuration</li>
+<li>routing</li>
+<li>endpoint</li>
+<li>security</li>
+<li>connector</li>
+</ul>
+<h5 id="函数实现"><a href="#函数实现" class="headerlink" title="函数实现:"></a>函数实现:</h5><p>自身状态管理:</p>
+<ul>
+<li>init</li>
+<li>start</li>
+<li>stop</li>
+<li>process</li>
+<li>is_available </li>
+<li>are_available </li>
+<li>is_routing</li>
+</ul>
+<p>属性:</p>
+<ul>
+<li>get_name</li>
+<li>get_client</li>
+<li>get_diagnosis</li>
+<li>get_security_mode</li>
+<li>get_offered_services_async </li>
+<li>get_sd_acceptance_required</li>
+<li>set_routing_state</li>
+<li>set_sd_acceptance_required </li>
+<li>set_sd_acceptance_required</li>
+</ul>
+<p>handler 类(调用client 传入的函数):</p>
+<ul>
+<li><p>register_state_handler</p>
+</li>
+<li><p>unregister_state_handler</p>
+</li>
+<li><p>register_message_handler </p>
+</li>
+<li><p>unregister_message_handler </p>
+</li>
+<li><p>register_availability_handler</p>
+</li>
+<li><p>unregister_availability_handler </p>
+</li>
+<li><p>register_subscription_handler </p>
+</li>
+<li><p>register_async_subscription_handler</p>
+</li>
+<li><p>register_subscription_status_handler </p>
+</li>
+<li><p>unregister_subscription_status_handler</p>
+</li>
+<li><p>unregister_subscription_handler </p>
+</li>
+<li><p>register_routing_ready_handler </p>
+</li>
+<li><p>register_routing_state_handler </p>
+</li>
+<li><p>clear_all_handler </p>
+</li>
+<li><p>register_sd_acceptance_handler </p>
+</li>
+<li><p>register_reboot_notification_handler </p>
+</li>
+<li><p>set_watchdog_handler </p>
+</li>
+</ul>
+<p>消息服务类:</p>
+<ul>
+<li><p>update_service_configuration </p>
+</li>
+<li><p>update_security_policy_configuration</p>
+</li>
+<li><p>remove_security_policy_configuration </p>
+</li>
+<li><p>offer_service </p>
+</li>
+<li><p>stop_offer_service</p>
+</li>
+<li><p>offer_event </p>
+</li>
+<li><p>stop_offer_event</p>
+</li>
+<li><p>request_service </p>
+</li>
+<li><p>release_service</p>
+</li>
+<li><p>request_event </p>
+</li>
+<li><p>release_event </p>
+</li>
+<li><p>subscribe</p>
+</li>
+<li><p>unsubscribe</p>
+</li>
+<li><p>send </p>
+</li>
+<li><p>notify </p>
+</li>
+<li><p>notify_one </p>
+</li>
+</ul>
+<h4 id="messgae-amp-payload"><a href="#messgae-amp-payload" class="headerlink" title="messgae &amp; payload"></a><strong>messgae &amp; payload</strong></h4><p><img src="../imgs/vSOMEIP_source_messages_arch.png" alt="msg_arch"></p>
+<p>message &amp; payload 模块与其他模块之间的交互;<br>主要负责 <code>set/get</code> 相关的属性(session, payload, id…), (反)序列化功能.</p>
+<p>由以下 <code>.cpp</code> 文件实现功能:</p>
+<ul>
+<li>message_base_impl.cpp</li>
+<li>message_header_impl.cpp</li>
+<li>message_impl.cpp</li>
+<li>payload_impl.cpp</li>
+</ul>
 
       
     </div>
@@ -261,7 +427,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -326,7 +492,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-count">13</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -339,7 +505,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-count">20</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -366,7 +532,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -376,6 +542,26 @@
   </div>
 
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
 
 
 
