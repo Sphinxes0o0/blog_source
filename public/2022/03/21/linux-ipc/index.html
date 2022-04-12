@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"4soos.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="进程间通信： IPC key: processes , communication   进程是一个独立的资源分配单元:  不同进程（这里所说的进程通常指的是用户进程）之间的资源是独立的，没有关联，不能在一个进程中直接访问另一个进程的资源,进程不是孤立的， 不同的进程需要进行信息的交互和状态的传递等，因此需要进程间通信( IPC：Inter Processes Communication )。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux_ipc">
+<meta property="og:url" content="https://4soos.github.io/2022/03/21/linux-ipc/index.html">
+<meta property="og:site_name" content="Young&#39;s Blog">
+<meta property="og:description" content="进程间通信： IPC key: processes , communication   进程是一个独立的资源分配单元:  不同进程（这里所说的进程通常指的是用户进程）之间的资源是独立的，没有关联，不能在一个进程中直接访问另一个进程的资源,进程不是孤立的， 不同的进程需要进行信息的交互和状态的传递等，因此需要进程间通信( IPC：Inter Processes Communication )。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-03-21T15:41:11.000Z">
+<meta property="article:modified_time" content="2022-03-21T15:42:01.488Z">
+<meta property="article:author" content="Young">
+<meta property="article:tag" content="Linux, C">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://4soos.github.io/2022/03/21/linux-ipc/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>linux_ipc | Young's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Young's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Thoughts & Notes</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/4soos" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://4soos.github.io/2022/03/21/linux-ipc/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Young">
+      <meta itemprop="description" content="C/CPP, Linux, Notes">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Young's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          linux_ipc
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-03-21 23:41:11 / Modified: 23:42:01" itemprop="dateCreated datePublished" datetime="2022-03-21T23:41:11+08:00">2022-03-21</time>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="进程间通信：-IPC"><a href="#进程间通信：-IPC" class="headerlink" title="进程间通信： IPC"></a>进程间通信： IPC</h1><blockquote>
+<p>key: processes , communication</p>
+</blockquote>
+<ul>
+<li><p>进程是一个独立的资源分配单元:</p>
+<ul>
+<li>不同进程（这里所说的进程通常指的是用户进程）之间的资源是独立的，没有关联，不能在一个进程中直接访问另一个进程的资源,进程不是孤立的，</li>
+<li>不同的进程需要进行信息的交互和状态的传递等，因此需要进程间通信( IPC：Inter Processes Communication )。</li>
+</ul>
+</li>
+<li><p>进程间通信的目的：</p>
+<ul>
+<li>数据传输：一个进程需要将它的数据发送给另一个进程。</li>
+<li>通知事件：一个进程需要向另一个或一组进程发送消息，通知它（它们）发生了某种事件（如进程终止时要通知父进程）。</li>
+<li>资源共享：多个进程之间共享同样的资源。为了做到这一点，需要内核提供互斥和同步机制。</li>
+<li>进程控制：有些进程希望完全控制另一个进程的执行（如 Debug 进程），此时控制进程希望能够拦截另一个进程的所有陷入和异常，并能够及时知道它的状态改变。</li>
+</ul>
+</li>
+<li><p>具体方式</p>
+<ul>
+<li>同一主机：<ul>
+<li>Unix<ul>
+<li>匿名管道</li>
+<li>具名管道</li>
+</ul>
+</li>
+<li>POSIX / System V<ul>
+<li>消息队列</li>
+<li>共享内存</li>
+<li>信号量</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>网络：<ul>
+<li>sokcet</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="管道"><a href="#管道" class="headerlink" title="管道"></a>管道</h2><p><code>ls | ws -l</code>：<br>shell 创建了2个进程来分别执行 <code>ls</code> 和 <code>wc</code>:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">---------------             -----------------                 -----------------</span><br><span class="line">|    stdout   |             |  管道          |                 | stdin         |</span><br><span class="line">| ls          |   ------&gt;   | 字节流， 单向   |  ------&gt;        |            wc |</span><br><span class="line">|       fd  1 |             |               |                 | fd 0          |</span><br><span class="line">---------------             -----------------                 -----------------</span><br><span class="line">                      管道写入端            管道读取端  </span><br><span class="line">      </span><br></pre></td></tr></table></figure>
+
+<p>特点：</p>
+<ul>
+<li>内存中维护的缓冲器<ul>
+<li>大小有限</li>
+<li>不同OS实现不用</li>
+</ul>
+</li>
+<li>具有文件的读.写操作，没有文件的实体(具名管道有文件实体)</li>
+<li>一个管道是一个字节流，没有消息边界的概念，可以读取任意大小的数据</li>
+<li>读取顺序和写入顺序完全一致</li>
+<li>单向传递，半双工</li>
+<li>一次性操作: 读取完之后就释放对应的内存</li>
+<li>匿名管道仅在具有共同公共祖先的进程之间使用</li>
+<li>数据结构: 环形队列(逻辑上)</li>
+</ul>
+<h3 id="具名管道"><a href="#具名管道" class="headerlink" title="具名管道"></a>具名管道</h3><p>由于匿名管道，只能用于亲缘关系之间的进程通信，具名管道(FIFO)， 解决了这个局限。</p>
+<ul>
+<li>具有文件实体， 但是实际数据在内核缓冲区中</li>
+<li>通过名字，可以进程间通信</li>
+</ul>
+<h4 id="有名管道的注意事项："><a href="#有名管道的注意事项：" class="headerlink" title="有名管道的注意事项："></a>有名管道的注意事项：</h4><ol>
+<li>一个为只读而打开一个管道的进程会阻塞，直到另外一个进程为只写打开管道</li>
+<li>一个为只写而打开一个管道的进程会阻塞，直到另外一个进程为只读打开管道</li>
+</ol>
+<p>读管道：</p>
+<ul>
+<li>管道中有数据，read返回实际读到的字节数</li>
+<li>管道中无数据：<ul>
+<li>管道写端被全部关闭，read返回0，（相当于读到文件末尾）</li>
+<li>写端没有全部被关闭，read阻塞等待</li>
+</ul>
+</li>
+</ul>
+<p>写管道：</p>
+<ul>
+<li>管道读端被全部关闭，进行异常终止（收到一个SIGPIPE信号）</li>
+<li>管道读端没有全部关闭：<ul>
+<li>管道已经满了，write会阻塞</li>
+<li>管道没有满，write将数据写入，并返回实际写入的字节数。</li>
+</ul>
+</li>
+</ul>
+<h3 id="Linux-实现"><a href="#Linux-实现" class="headerlink" title="Linux 实现"></a>Linux 实现</h3><p>pipe 属于 Linux 文件系统中的一种类型：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="class"><span class="keyword">struct</span> <span class="title">file_system_type</span> <span class="title">pipe_fs_type</span> =</span> &#123;</span><br><span class="line">	.name		= <span class="string">&quot;pipefs&quot;</span>,</span><br><span class="line">	.init_fs_context = pipefs_init_fs_context,</span><br><span class="line">	.kill_sb	= kill_anon_super,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>在<code>sysctl</code>中的属性如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="class"><span class="keyword">struct</span> <span class="title">ctl_table</span> <span class="title">fs_pipe_sysctls</span>[] =</span> &#123;</span><br><span class="line">	&#123;</span><br><span class="line">		.procname	= <span class="string">&quot;pipe-max-size&quot;</span>,</span><br><span class="line">		.data		= &amp;pipe_max_size, </span><br><span class="line">		.maxlen		= <span class="keyword">sizeof</span>(pipe_max_size),</span><br><span class="line">		.mode		= <span class="number">0644</span>,</span><br><span class="line">		.proc_handler	= proc_dopipe_max_size,</span><br><span class="line">	&#125;,</span><br><span class="line">	&#123;</span><br><span class="line">		.procname	= <span class="string">&quot;pipe-user-pages-hard&quot;</span>,</span><br><span class="line">		.data		= &amp;pipe_user_pages_hard,</span><br><span class="line">		.maxlen		= <span class="keyword">sizeof</span>(pipe_user_pages_hard),</span><br><span class="line">		.mode		= <span class="number">0644</span>,</span><br><span class="line">		.proc_handler	= proc_doulongvec_minmax,</span><br><span class="line">	&#125;,</span><br><span class="line">	&#123;</span><br><span class="line">		.procname	= <span class="string">&quot;pipe-user-pages-soft&quot;</span>,</span><br><span class="line">		.data		= &amp;pipe_user_pages_soft,</span><br><span class="line">		.maxlen		= <span class="keyword">sizeof</span>(pipe_user_pages_soft),</span><br><span class="line">		.mode		= <span class="number">0644</span>,</span><br><span class="line">		.proc_handler	= proc_doulongvec_minmax,</span><br><span class="line">	&#125;,</span><br><span class="line">	&#123; &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>pipe-max-size<ul>
+<li>1048576</li>
+<li><code>/proc/sys/fs/pipe-max-size</code></li>
+</ul>
+</li>
+</ul>
+<p>在 Linux 的实现中，每一个管道至少需要有2段buffer, 一个里面要读取的数据，一个留个即将写入的数据;</p>
+<p>实际数据结构：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">pipe_buffer</span> &#123;</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">page</span> *<span class="title">page</span>;</span></span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">int</span> offset, len;</span><br><span class="line">	<span class="keyword">const</span> <span class="class"><span class="keyword">struct</span> <span class="title">pipe_buf_operations</span> *<span class="title">ops</span>;</span></span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">int</span> flags;</span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">private</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="管道的读写特点："><a href="#管道的读写特点：" class="headerlink" title="管道的读写特点："></a>管道的读写特点：</h3><p>使用管道时，需要注意以下几种特殊的情况（假设都是阻塞I/O操作）:  </p>
+<ol>
+<li><p>所有的指向管道写端的文件描述符都关闭了（管道写端引用计数为0），有进程从管道的读端<br>读数据，那么管道中剩余的数据被读取以后，再次read会返回0，就像读到文件末尾一样。</p>
+</li>
+<li><p>如果有指向管道写端的文件描述符没有关闭（管道的写端引用计数大于0），而持有管道写端的进程<br>也没有往管道中写数据，这个时候有进程从管道中读取数据，那么管道中剩余的数据被读取后，<br>再次read会阻塞，直到管道中有数据可以读了才读取数据并返回。</p>
+</li>
+<li><p>如果所有指向管道读端的文件描述符都关闭了（管道的读端引用计数为0），这个时候有进程<br>向管道中写数据，那么该进程会收到一个信号SIGPIPE, 通常会导致进程异常终止。</p>
+</li>
+<li><p>如果有指向管道读端的文件描述符没有关闭（管道的读端引用计数大于0），而持有管道读端的进程<br>也没有从管道中读数据，这时有进程向管道中写数据，那么在管道被写满的时候再次write会阻塞，<br>直到管道中有空位置才能再次写入数据并返回。</p>
+</li>
+</ol>
+<p>总结：</p>
+<ul>
+<li><p>读管道：</p>
+<ul>
+<li>有数据，read返回实际读到的字节数。</li>
+<li>无数据：<br>  写端被全部关闭，read返回0（相当于读到文件的末尾）<br>  写端没有完全关闭，read阻塞等待</li>
+</ul>
+</li>
+<li><p>写管道：</p>
+<ul>
+<li>全部被关闭，进程异常终止（进程收到SIGPIPE信号）</li>
+<li>没有全部关闭：<br>  管道已满，write阻塞<br>  管道没有满，write将数据写入，并返回实际写入的字节数</li>
+</ul>
+</li>
+</ul>
+<h2 id="内存映射-Memory-Mapped"><a href="#内存映射-Memory-Mapped" class="headerlink" title="内存映射 Memory-Mapped"></a>内存映射 Memory-Mapped</h2><p>将磁盘文件的数据映射到内存， 用户通过修改内存就能修改磁盘文件</p>
+<p>使用内存映射实现进程间通信：</p>
+<ol>
+<li><p>有关系的进程（父子进程）</p>
+<ul>
+<li>还没有子进程的时候<ul>
+<li>通过唯一的父进程，先创建内存映射区</li>
+</ul>
+</li>
+<li>有了内存映射区以后，创建子进程</li>
+<li>父子进程共享创建的内存映射区</li>
+<li>匿名映射(没有文件实体)</li>
+</ul>
+</li>
+<li><p>没有关系的进程间通信</p>
+<ul>
+<li>准备一个大小不是0的磁盘文件</li>
+<li>进程1 通过磁盘文件创建内存映射区<ul>
+<li>得到一个操作这块内存的指针</li>
+</ul>
+</li>
+<li>进程2 通过磁盘文件创建内存映射区<ul>
+<li>得到一个操作这块内存的指针</li>
+</ul>
+</li>
+<li>使用内存映射区通信</li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p>注意：内存映射区通信，是非阻塞。</p>
+</blockquote>
+<h3 id="Linux-调用函数"><a href="#Linux-调用函数" class="headerlink" title="Linux 调用函数"></a>Linux 调用函数</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">mmap</span><span class="params">(<span class="keyword">void</span> *addr, <span class="keyword">size_t</span> length, <span class="keyword">int</span> prot, <span class="keyword">int</span> flags,<span class="keyword">int</span> fd, <span class="keyword">off_t</span> offset)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>功能：<br>将一个文件或者设备的数据映射到内存中</p>
+</li>
+<li><p>参数：</p>
+<ul>
+<li><p>void *addr: NULL, 由内核指定</p>
+</li>
+<li><p>length : 要映射的数据的长度，这个值不能为0。建议使用文件的长度。<br>  获取文件的长度：</p>
+<ul>
+<li>stat() </li>
+<li>lseek()</li>
+</ul>
+</li>
+<li><p>prot : 对申请的内存映射区的操作权限</p>
+<ul>
+<li>PROT_EXEC ：可执行的权限</li>
+<li>PROT_READ ：读权限</li>
+<li>PROT_WRITE ：写权限</li>
+<li>PROT_NONE ：没有权限</li>
+</ul>
+<p>  要操作映射内存，必须要有读的权限。<br>  PROT_READ、PROT_READ|PROT_WRITE</p>
+</li>
+<li><p>flags :</p>
+<ul>
+<li>MAP_SHARED : 映射区的数据会自动和磁盘文件进行同步，进程间通信，必须要设置这个选项</li>
+<li>MAP_PRIVATE ：不同步，内存映射区的数据改变了，对原来的文件不会修改，会重新创建一个新的</li>
+</ul>
+</li>
+<li><p>fd: 需要映射的那个文件的文件描述符</p>
+<ul>
+<li>通过open得到，open的是一个磁盘文件</li>
+<li>注意：文件的大小不能为0，open指定的权限不能和prot参数有冲突。<br>  prot: PROT_READ                open:只读/读写<br>  prot: PROT_READ | PROT_WRITE   open:读写</li>
+</ul>
+</li>
+<li><p>offset：偏移量，一般不用。必须指定的是4k的整数倍，0表示不便宜。</p>
+</li>
+</ul>
+</li>
+<li><p>返回值：返回创建的内存的首地址<br>  失败返回 <code>MAP_FAILED</code>，<code>(void *) -1</code></p>
+</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">munmap</span><span class="params">(<span class="keyword">void</span> *addr, <span class="keyword">size_t</span> length)</span></span>;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>功能：释放内存映射</li>
+<li>参数：<ul>
+<li>addr : 要释放的内存的首地址</li>
+<li>length : 要释放的内存的大小，要和mmap函数中的length参数的值一样。</li>
+</ul>
+</li>
+</ul>
+<h3 id="Q-amp-A"><a href="#Q-amp-A" class="headerlink" title="Q&amp;A"></a>Q&amp;A</h3><ol>
+<li><p>如果对mmap的返回值(ptr)做++操作(ptr++), munmap是否能够成功?  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> * ptr = mmap(...);</span><br><span class="line">ptr++;  <span class="comment">//可以对其进行++操作</span></span><br><span class="line">munmap(ptr, len);   <span class="comment">// 错误,要保存地址</span></span><br></pre></td></tr></table></figure></li>
+<li><p>如果open时 <code>O_RDONLY</code>, mmap时prot参数指定 <code>PROT_READ | PROT_WRITE</code> 会怎样?</p>
+<p> 错误，返回MAP_FAILED<br> open()函数中的权限建议和prot参数的权限保持一致。</p>
+</li>
+<li><p>如果文件偏移量为1000会怎样?</p>
+<p> 偏移量必须是4K的整数倍，返回MAP_FAILED</p>
+</li>
+<li><p>mmap什么情况下会调用失败?</p>
+<ul>
+<li>第二个参数：length = 0</li>
+<li>第三个参数：prot<ul>
+<li>只指定了写权限</li>
+<li>prot <code>PROT_READ | PROT_WRITE</code><br>第5个参数fd 通过open函数时指定的<code> O_RDONLY / O_WRONLY</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>可以open的时候O_CREAT一个新文件来创建映射区吗?</p>
+<ul>
+<li>可以的，但是创建的文件的大小如果为0的话，肯定不行</li>
+<li>可以对新的文件进行扩展<ul>
+<li>lseek()</li>
+<li>truncate()</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>mmap后关闭文件描述符，对mmap映射有没有影响？</p>
+ <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> fd = open(<span class="string">&quot;XXX&quot;</span>);</span><br><span class="line">mmap(,,,,fd,<span class="number">0</span>);</span><br><span class="line">close(fd); </span><br></pre></td></tr></table></figure>
+<p> 映射区还存在，创建映射区的fd被关闭，没有任何影响。</p>
+</li>
+<li><p>对ptr越界操作会怎样？</p>
+ <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> * ptr = mmap(<span class="literal">NULL</span>, <span class="number">100</span>,,,,,);</span><br></pre></td></tr></table></figure>
+<p> 4K;<br> 越界操作操作的是非法的内存 -&gt; 段错误</p>
+</li>
+</ol>
+<h2 id="信号"><a href="#信号" class="headerlink" title="信号"></a>信号</h2><p>Linux 进程间通信的最古老的方式之一，是事件发生时对进程的通知机制，有时也称之为软件中断，<br>它是在软件层次上对中断机制的一种模拟，是一种异步通信的方式。</p>
+<p>信号可以导致一个正在运行的进程被另一个正在运行的异步进程中断，转而处理某一个突发事件。</p>
+<p>发往进程的诸多信号，通常都是源于内核。引发内核为进程产生信号的各类事件如下：</p>
+<ul>
+<li><p>对于前台进程，用户可以通过输入特殊的终端字符来给它发送信号。比如输入Ctrl+C<br>通常会给进程发送一个中断信号。</p>
+</li>
+<li><p>硬件发生异常，即硬件检测到一个错误条件并通知内核，随即再由内核发送相应信号给<br>相关进程。比如执行一条异常的机器语言指令，诸如被 0 除，或者引用了无法访问的<br>内存区域。</p>
+</li>
+<li><p>系统状态变化，比如 alarm 定时器到期将引起 SIGALRM 信号，进程执行的 CPU<br>时间超限，或者该进程的某个子进程退出。</p>
+</li>
+<li><p>运行 kill 命令或调用 kill 函数。</p>
+</li>
+</ul>
+<p>使用信号的两个主要目的是：</p>
+<ul>
+<li><p>让进程知道已经发生了一个特定的事情。</p>
+</li>
+<li><p>强迫进程执行它自己代码中的信号处理程序。</p>
+</li>
+<li><p>信号的特点：</p>
+<ul>
+<li>简单</li>
+<li>不能携带大量信息</li>
+<li>满足某个特定条件才发送</li>
+<li>优先级比较高</li>
+</ul>
+</li>
+<li><p>查看系统定义的信号列表：kill –l</p>
+</li>
+</ul>
+<h3 id="信号的-5-种默认处理动作"><a href="#信号的-5-种默认处理动作" class="headerlink" title="信号的 5 种默认处理动作"></a>信号的 5 种默认处理动作</h3><ul>
+<li><p>查看信号的详细信息：man 7 signal</p>
+</li>
+<li><p>信号的 5 中默认处理动作</p>
+<ul>
+<li>Term 终止进程</li>
+<li>Ign 当前进程忽略掉这个信号</li>
+<li>Core 终止进程，并生成一个Core文件</li>
+<li>Stop 暂停当前进程</li>
+<li>Cont 继续执行当前被暂停的进程</li>
+</ul>
+</li>
+<li><p>信号的几种状态：</p>
+<ul>
+<li>产生</li>
+<li>未决</li>
+<li>递达</li>
+</ul>
+</li>
+<li><p>SIGKILL 和 SIGSTOP 信号不能被捕捉、阻塞或者忽略，只能执行默认动作。</p>
+</li>
+</ul>
+<h3 id="信号相关的函数"><a href="#信号相关的函数" class="headerlink" title="信号相关的函数"></a>信号相关的函数</h3><ul>
+<li>int kill(pid_t pid, int sig);</li>
+<li>int raise(int sig);</li>
+<li>void abort(void);</li>
+<li>unsigned int alarm(unsigned int seconds);</li>
+<li>int setitimer(int which, const struct itimerval *new_val, struct itimerval *old_value);</li>
+<li>sighandler_t signal(int signum, sighandler_t handler);</li>
+<li>int sigaction(int signum, const struct sigaction *act, struct sigaction *oldact);</li>
+</ul>
+<h3 id="信号集"><a href="#信号集" class="headerlink" title="信号集"></a>信号集</h3><ul>
+<li><p>许多信号相关的系统调用都需要能表示一组不同的信号，多个信号可使用一个称之为<br>信号集的数据结构来表示，其系统数据类型为 sigset_t。 </p>
+</li>
+<li><p>在 PCB 中有两个非常重要的信号集。一个称之为 “阻塞信号集” ，另一个称之为“未决信号集” 。<br>这两个信号集都是内核使用位图机制来实现的。但操作系统不允许我们直接对这两个信号集进行位操作。<br>而需自定义另外一个集合，借助信号集操作函数来对 PCB 中的这两个信号集进行修改。</p>
+</li>
+<li><p>信号的 “未决” 是一种状态，指的是从信号的产生到信号被处理前的这一段时间。</p>
+</li>
+<li><p>信号的 “阻塞” 是一个开关动作，指的是阻止信号被处理，但不是阻止信号产生。</p>
+</li>
+<li><p>信号的阻塞就是让系统暂时保留信号留待以后发送。由于另外有办法让系统忽略信号，<br>所以一般情况下信号的阻塞只是暂时的，只是为了防止信号打断敏感的操作。</p>
+</li>
+</ul>
+<h4 id="相关函数"><a href="#相关函数" class="headerlink" title="相关函数"></a>相关函数</h4><ul>
+<li>int sigemptyset(sigset_t *set);</li>
+<li>int sigfillset(sigset_t *set);</li>
+<li>int sigaddset(sigset_t *set, int signum);</li>
+<li>int sigdelset(sigset_t *set, int signum);</li>
+<li>int sigismember(const sigset_t *set, int signum);</li>
+<li>int sigprocmask(int how, const sigset_t *set, sigset_t *oldset);</li>
+<li>int sigpending(sigset_t *set);</li>
+</ul>
+<h3 id="MAN-7-signal"><a href="#MAN-7-signal" class="headerlink" title="MAN 7 signal"></a>MAN 7 signal</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">Signal numbering <span class="keyword">for</span> standard signals</span><br><span class="line">      The numeric value <span class="keyword">for</span> each signal is given <span class="keyword">in</span> the table below.  As shown <span class="keyword">in</span> the table, many</span><br><span class="line">      signals  have different numeric values on different architectures.  The first numeric value</span><br><span class="line">      <span class="keyword">in</span> each table row shows the signal number on x86, ARM, and most  other  architectures;  the</span><br><span class="line">      second  value is <span class="keyword">for</span> Alpha and SPARC; the third is <span class="keyword">for</span> MIPS; and the last is <span class="keyword">for</span> PARISC.  A</span><br><span class="line">      dash (-) denotes that a signal is absent on the corresponding architecture.</span><br><span class="line"></span><br><span class="line">      Signal        x86/ARM     Alpha/   MIPS   PARISC   Notes</span><br><span class="line">                  most others   SPARC</span><br><span class="line">      ─────────────────────────────────────────────────────────────────</span><br><span class="line">      SIGHUP           1           1       1       1</span><br><span class="line">      SIGINT           2           2       2       2</span><br><span class="line">      SIGQUIT          3           3       3       3</span><br><span class="line">      SIGILL           4           4       4       4</span><br><span class="line">      SIGTRAP          5           5       5       5</span><br><span class="line">      SIGABRT          6           6       6       6</span><br><span class="line">      SIGIOT           6           6       6       6</span><br><span class="line">      SIGBUS           7          10      10      10</span><br><span class="line">      SIGEMT           -           7       7      -</span><br><span class="line">      SIGFPE           8           8       8       8</span><br><span class="line">      SIGKILL          9           9       9       9</span><br><span class="line">      SIGUSR1         10          30      16      16</span><br><span class="line">      SIGSEGV         11          11      11      11</span><br><span class="line">      SIGUSR2         12          31      17      17</span><br><span class="line">      SIGPIPE         13          13      13      13</span><br><span class="line">      SIGALRM         14          14      14      14</span><br><span class="line">      SIGTERM         15          15      15      15</span><br><span class="line">      SIGSTKFLT       16          -       -        7</span><br><span class="line">      SIGCHLD         17          20      18      18</span><br><span class="line">      SIGCLD           -          -       18      -</span><br><span class="line">      SIGCONT         18          19      25      26</span><br><span class="line">      SIGSTOP         19          17      23      24</span><br><span class="line">      SIGTSTP         20          18      24      25</span><br><span class="line">      SIGTTIN         21          21      26      27</span><br><span class="line">      SIGTTOU         22          22      27      28</span><br><span class="line">      SIGURG          23          16      21      29</span><br><span class="line">      SIGXCPU         24          24      30      12</span><br><span class="line">      SIGXFSZ         25          25      31      30</span><br><span class="line">      SIGVTALRM       26          26      28      20</span><br><span class="line">      SIGPROF         27          27      29      21</span><br><span class="line">      SIGWINCH        28          28      20      23</span><br><span class="line">      SIGIO           29          23      22      22</span><br><span class="line">      SIGPOLL                                            Same as SIGIO</span><br><span class="line">      SIGPWR          30         29/-     19      19</span><br><span class="line">      SIGINFO          -         29/-     -       -</span><br><span class="line">      SIGLOST          -         -/29     -       -</span><br><span class="line">      SIGSYS          31          12      12      31</span><br><span class="line">      SIGUNUSED       31          -       -       31</span><br><span class="line"></span><br><span class="line">Note the following:</span><br><span class="line"></span><br><span class="line">      *  Where defined, SIGUNUSED is synonymous with SIGSYS.  Since glibc 2.26, SIGUNUSED  is  no</span><br><span class="line">         longer defined on any architecture.</span><br><span class="line"></span><br><span class="line">      *  Signal 29 is SIGINFO/SIGPWR (synonyms <span class="keyword">for</span> the same value) on Alpha but SIGLOST on SPARC.</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Linux-C/" rel="tag"># Linux, C</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/01/15/elf%E7%AE%80%E4%BB%8B/" rel="prev" title="elf简介">
+      <i class="fa fa-chevron-left"></i> elf简介
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/03/24/thread/" rel="next" title="thread">
+      thread <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1%EF%BC%9A-IPC"><span class="nav-number">1.</span> <span class="nav-text">进程间通信： IPC</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%A1%E9%81%93"><span class="nav-number">1.1.</span> <span class="nav-text">管道</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B7%E5%90%8D%E7%AE%A1%E9%81%93"><span class="nav-number">1.1.1.</span> <span class="nav-text">具名管道</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%89%E5%90%8D%E7%AE%A1%E9%81%93%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9%EF%BC%9A"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">有名管道的注意事项：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Linux-%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.1.2.</span> <span class="nav-text">Linux 实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%A1%E9%81%93%E7%9A%84%E8%AF%BB%E5%86%99%E7%89%B9%E7%82%B9%EF%BC%9A"><span class="nav-number">1.1.3.</span> <span class="nav-text">管道的读写特点：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E6%98%A0%E5%B0%84-Memory-Mapped"><span class="nav-number">1.2.</span> <span class="nav-text">内存映射 Memory-Mapped</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Linux-%E8%B0%83%E7%94%A8%E5%87%BD%E6%95%B0"><span class="nav-number">1.2.1.</span> <span class="nav-text">Linux 调用函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q-amp-A"><span class="nav-number">1.2.2.</span> <span class="nav-text">Q&amp;A</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%A1%E5%8F%B7"><span class="nav-number">1.3.</span> <span class="nav-text">信号</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%A1%E5%8F%B7%E7%9A%84-5-%E7%A7%8D%E9%BB%98%E8%AE%A4%E5%A4%84%E7%90%86%E5%8A%A8%E4%BD%9C"><span class="nav-number">1.3.1.</span> <span class="nav-text">信号的 5 种默认处理动作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%A1%E5%8F%B7%E7%9B%B8%E5%85%B3%E7%9A%84%E5%87%BD%E6%95%B0"><span class="nav-number">1.3.2.</span> <span class="nav-text">信号相关的函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%A1%E5%8F%B7%E9%9B%86"><span class="nav-number">1.3.3.</span> <span class="nav-text">信号集</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3%E5%87%BD%E6%95%B0"><span class="nav-number">1.3.3.1.</span> <span class="nav-text">相关函数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MAN-7-signal"><span class="nav-number">1.3.4.</span> <span class="nav-text">MAN 7 signal</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Young</p>
+  <div class="site-description" itemprop="description">C/CPP, Linux, Notes</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Young</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

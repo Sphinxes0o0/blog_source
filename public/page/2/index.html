@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"4soos.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="C&#x2F;CPP, Linux, Notes">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Young&#39;s Blog">
+<meta property="og:url" content="https://4soos.github.io/page/2/index.html">
+<meta property="og:site_name" content="Young&#39;s Blog">
+<meta property="og:description" content="C&#x2F;CPP, Linux, Notes">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="Young">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://4soos.github.io/page/2/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : true,
+    isPost : false,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Young's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Young's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Thoughts & Notes</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/4soos" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content index posts-expand">
+            
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://4soos.github.io/2022/03/24/thread/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Young">
+      <meta itemprop="description" content="C/CPP, Linux, Notes">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Young's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/03/24/thread/" class="post-title-link" itemprop="url">thread</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-03-24 01:23:58 / Modified: 01:26:47" itemprop="dateCreated datePublished" datetime="2022-03-24T01:23:58+08:00">2022-03-24</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="线程概述"><a href="#线程概述" class="headerlink" title="线程概述"></a>线程概述</h1><p>与进程（process）类似，线程（thread）是允许应用程序并发执行多个任务的一种机<br>制。一个进程可以包含多个线程。<br>同一个程序中的所有线程均会独立执行相同程序，且共享同一份全局内存区域，其中包括初始化数据段、未初始化数据段，以及堆内存段。（传<br>统意义上的 UNIX 进程只是多线程程序的一个特例，该进程只包含一个线程）</p>
+<ul>
+<li>进程是 CPU 分配资源的最小单位，线程是操作系统调度执行的最小单位。</li>
+<li>线程是轻量级的进程（LWP：Light Weight Process），<code>在 Linux 环境下线程的本质仍是进程</code>。</li>
+<li>查看指定进程的 LWP 号：ps –Lf pid</li>
+</ul>
+<p><strong>线程和进程区别</strong></p>
+<ul>
+<li><p>进程间的信息难以共享。<br>  由于除去只读代码段外，父子进程并未共享内存，因此必须采用一些进程间通信方式，在进程间进行信息交换。</p>
+</li>
+<li><p>调用 fork() 来创建进程的代价相对较高，即便利用写时复制技术，仍然需要复制诸如内存页表和文件描述符表之类的多种进程属性，<br>这意味着 fork() 调用在时间上的开销依然不菲。</p>
+</li>
+<li><p>线程之间能够方便、快速地共享信息。只需将数据复制到共享（全局或堆）变量中即可。</p>
+</li>
+<li><p>创建线程比创建进程通常要快 10 倍甚至更多。线程间是共享虚拟地址空间的，无需采用写时复制来复制内存，也无需复制页表。</p>
+</li>
+</ul>
+<p><strong>线程之间共享和非共享资源</strong></p>
+<ul>
+<li><p>共享资源</p>
+<ul>
+<li>进程 ID 和父进程 ID</li>
+<li>进程组 ID 和会话 ID</li>
+<li>用户 ID 和 用户组 ID</li>
+<li>文件描述符表</li>
+<li>信号处置</li>
+<li>文件系统的相关信息：文件权限掩码（umask）、当前工作目录</li>
+<li>虚拟地址空间（除栈、.text） </li>
+</ul>
+</li>
+<li><p>非共享资源</p>
+<ul>
+<li>线程 ID</li>
+<li>信号掩码</li>
+<li>线程特有数据</li>
+<li>error 变量</li>
+<li>实时调度策略和优先级</li>
+<li>栈，本地变量和函数的调用链接信息</li>
+</ul>
+</li>
+</ul>
+<h2 id="NPTL"><a href="#NPTL" class="headerlink" title="NPTL"></a>NPTL</h2><p>当 Linux 最初开发时，在内核中并不能真正支持线程。</p>
+<p>但是它的确可以通过 clone() 系统调用将进程作为可调度的实体。这个调用创建了调用进程（calling process）的<br>一个拷贝，这个拷贝与调用进程共享相同的地址空间。LinuxThreads 项目使用这个调用来完成在用户空间模拟对线程的支持。<br>不幸的是，这种方法有一些缺点，尤其是在信号处理、调度和进程间同步等方面都存在问题。<br>另外，这个线程模型也不符合 POSIX 的要求。</p>
+<ul>
+<li><p>要改进 LinuxThreads，需要内核的支持，并且重写线程库。有两个相互竞争的项目开始<br>来满足这些要求。一个包括 IBM 的开发人员的团队开展了 NGPT（Next-Generation<br>POSIX Threads）项目。同时，Red Hat 的一些开发人员开展了 NPTL 项目。NGPT<br>在 2003 年中期被放弃了，把这个领域完全留给了 NPTL。</p>
+</li>
+<li><p>NPTL，或称为 Native POSIX Thread Library，是 Linux 线程的一个新实现，它克服了 LinuxThreads 的缺点，同时也符合 POSIX 的需求。与 LinuxThreads 相比，它在性能和稳定性方面都提供了重大的改进。</p>
+</li>
+<li><p>查看当前 pthread 库版本：getconf GNU_LIBPTHREAD_VERSION</p>
+</li>
+</ul>
+<h2 id="线程创建函数"><a href="#线程创建函数" class="headerlink" title="线程创建函数"></a>线程创建函数</h2><ul>
+<li>int pthread_create(pthread_t *thread, const pthread_attr_t *attr, </li>
+<li>void *(*start_routine) (void *), void *arg);</li>
+<li>pthread_t pthread_self(void);</li>
+<li>int pthread_equal(pthread_t t1, pthread_t t2);</li>
+<li>void pthread_exit(void *retval);</li>
+<li>int pthread_join(pthread_t thread, void **retval);</li>
+<li>int pthread_detach(pthread_t thread);</li>
+<li>int pthread_cancel(pthread_t thread);</li>
+</ul>
+<h3 id="线程属性函数"><a href="#线程属性函数" class="headerlink" title="线程属性函数"></a>线程属性函数</h3><ul>
+<li>线程属性类型 pthread_attr_t</li>
+<li>int pthread_attr_init(pthread_attr_t *attr);</li>
+<li>int pthread_attr_destroy(pthread_attr_t *attr);</li>
+<li>int pthread_attr_getdetachstate(const pthread_attr_t *attr, int </li>
+<li>detachstate);</li>
+<li>int pthread_attr_setdetachstate(pthread_attr_t *attr, int<br>detachstate);</li>
+</ul>
+<h2 id="线程同步"><a href="#线程同步" class="headerlink" title="线程同步"></a>线程同步</h2><p>即当有一个线程在对内存进行操作时，其他线程都不可以对这个内存地址进行操作，<br>直到该线程完成操作，其他线程才能对该内存地址进行操作，而其他线程则处于等待状态。</p>
+<blockquote>
+<p>线程的主要优势在于，能够通过全局变量来共享信息。不过，这种便捷的共享是有代价的：<br>必须确保多个线程不会同时修改同一变量，或者某一线程不会读取正在由其他线程修改的变量。</p>
+</blockquote>
+<blockquote>
+<p>临界区是指访问某一共享资源的代码片段，并且这段代码的执行应为原子操作，也就是<br>同时访问同一共享资源的其他线程不应终端该片段的执行。</p>
+</blockquote>
+<h3 id="互斥量"><a href="#互斥量" class="headerlink" title="互斥量"></a>互斥量</h3><p>为避免线程更新共享变量时出现问题，可以使用互斥量（mutex 是 mutual exclusion<br>的缩写）来确保同时仅有一个线程可以访问某项共享资源。可以使用互斥量来保证对任意共<br>享资源的原子访问。</p>
+<ul>
+<li><p>互斥量有两种状态：</p>
+<ul>
+<li>已锁定（locked）</li>
+<li>未锁定（unlocked）。<br>任何时候，至多只有一个线程可以锁定该互斥量。试图对已经锁定的某一互斥量再次加锁，将可能阻塞线程或者报<br>错失败，具体取决于加锁时使用的方法。</li>
+</ul>
+</li>
+<li><p>一旦线程锁定互斥量，随即成为该互斥量的所有者，只有所有者才能给互斥量解锁。<br>一般情况下，对每一共享资源（可能由多个相关变量组成）会使用不同的互斥量，每一线程在访问<br>同一资源时将采用如下协议：</p>
+<ul>
+<li>针对共享资源锁定互斥量</li>
+<li>访问共享资源</li>
+<li>对互斥量解锁</li>
+</ul>
+</li>
+</ul>
+<h3 id="死锁"><a href="#死锁" class="headerlink" title="死锁"></a>死锁</h3><ul>
+<li><p>有时，一个线程需要同时访问两个或更多不同的共享资源，而每个资源又都由不同的互斥量管理。当超过一个线程加锁同一组互斥量时，就有可能发生死锁。</p>
+</li>
+<li><p>两个或两个以上的进程在执行过程中，因争夺共享资源而造成的一种互相等待的现象，若无外力作用，它们都将无法推进下去。此时称系统处于死锁状态或统产生了死锁。</p>
+</li>
+<li><p>死锁的几种场景：</p>
+<ul>
+<li>忘记释放锁</li>
+<li>重复加锁</li>
+<li>多线程多锁，抢占锁资源</li>
+</ul>
+</li>
+</ul>
+<h4 id="互斥量相关操作函数"><a href="#互斥量相关操作函数" class="headerlink" title="互斥量相关操作函数"></a>互斥量相关操作函数</h4><ul>
+<li>互斥量的类型 pthread_mutex_t</li>
+<li>int pthread_mutex_init(pthread_mutex_t *restrict mutex, const pthread_mutexattr_t *restrict attr);</li>
+<li>int pthread_mutex_destroy(pthread_mutex_t *mutex);</li>
+<li>int pthread_mutex_lock(pthread_mutex_t *mutex);</li>
+<li>int pthread_mutex_trylock(pthread_mutex_t *mutex);</li>
+<li>int pthread_mutex_unlock(pthread_mutex_t *mutex);</li>
+</ul>
+<h3 id="读写锁"><a href="#读写锁" class="headerlink" title="读写锁"></a>读写锁</h3><ul>
+<li>当有一个线程已经持有互斥锁时，互斥锁将所有试图进入临界区的线程都阻塞住。但是考<br>虑一种情形，当前持有互斥锁的线程只是要读访问共享资源，而同时有其它几个线程也想<br>读取这个共享资源，但是由于互斥锁的排它性，所有其它线程都无法获取锁，也就无法读<br>访问共享资源了，但是实际上多个线程同时读访问共享资源并不会导致问题。</li>
+<li>在对数据的读写操作中，更多的是读操作，写操作较少，例如对数据库数据的读写应用。<br>为了满足当前能够允许多个读出，但只允许一个写入的需求，线程提供了读写锁来实现。</li>
+<li>读写锁的特点：<ul>
+<li>如果有其它线程读数据，则允许其它线程执行读操作，但不允许写操作。</li>
+<li>如果有其它线程写数据，则其它线程都不允许读、写操作。</li>
+<li>写是独占的，写的优先级高。</li>
+</ul>
+</li>
+</ul>
+<h4 id="读写锁相关操作函数"><a href="#读写锁相关操作函数" class="headerlink" title="读写锁相关操作函数"></a>读写锁相关操作函数</h4><ul>
+<li>读写锁的类型 pthread_rwlock_t</li>
+<li>int pthread_rwlock_init(pthread_rwlock_t *restrict rwlock, const pthread_rwlockattr_t *restrict attr);</li>
+<li>int pthread_rwlock_destroy(pthread_rwlock_t *rwlock);</li>
+<li>int pthread_rwlock_rdlock(pthread_rwlock_t *rwlock);</li>
+<li>int pthread_rwlock_tryrdlock(pthread_rwlock_t *rwlock);</li>
+<li>int pthread_rwlock_wrlock(pthread_rwlock_t *rwlock);</li>
+<li>int pthread_rwlock_trywrlock(pthread_rwlock_t *rwlock);</li>
+<li>int pthread_rwlock_unlock(pthread_rwlock_t *rwlock);</li>
+</ul>
+<h3 id="信号量"><a href="#信号量" class="headerlink" title="信号量"></a>信号量</h3><ul>
+<li>信号量的类型 sem_t</li>
+<li>int sem_init(sem_t *sem, int pshared, unsigned int value);</li>
+<li>int sem_destroy(sem_t *sem);</li>
+<li>int sem_wait(sem_t *sem);</li>
+<li>int sem_trywait(sem_t *sem);</li>
+<li>int sem_timedwait(sem_t *sem, const struct timespec *abs_timeout);</li>
+<li>int sem_post(sem_t *sem);</li>
+<li>int sem_getvalue(sem_t *sem, int *sval);</li>
+</ul>
+<h3 id="RCU"><a href="#RCU" class="headerlink" title="RCU"></a>RCU</h3><p>RCU锁是读写锁的扩展版本，简单来说就是支持多读多写同时加锁，但是对于多写同时加锁，还是存在一些技术挑战的。</p>
+<p>RCU锁翻译为 <code>Read Copy Update Lock</code>:</p>
+<ul>
+<li>Copy ：写者在访问临界区时，写者将先拷贝一个临界区副本，然后对副本进行修改；</li>
+<li>Update ：RCU机制将在在适当时机使用一个回调函数把指向原来临界区的指针重新指向新的被修改的临界区，锁机制中的垃圾收集器负责回调函数的调用。</li>
+</ul>
+<blockquote>
+<p>更新时机：没有CPU再去操作这段被RCU保护的临界区后，这段临界区即可回收了，此时回调函数即被调用。</p>
+</blockquote>
+<p>从实现逻辑来看，RCU锁在多个写者之间的同步开销还是比较大的，涉及到多份数据拷贝，回调函数等，因此这种锁机制的使用范围比较窄，适用于读多写少的情况，如网络路由表的查询更新、设备状态表更新等，在业务开发中使用不是很多。</p>
+<h3 id="条件变量"><a href="#条件变量" class="headerlink" title="条件变量"></a>条件变量</h3><p>条件变量是用来等待线程而不是上锁的，通常和互斥锁一起使用。<br>互斥锁的一个明显的特点就是某些业务场景中无法借助系统来唤醒，仍然需要业务代码使用while来判断，这样效率本质上比较低。<br>而条件变量通过允许线程阻塞和等待另一个线程发送信号来弥补互斥锁的不足，所以互斥锁和条件变量通常一起使用，来让条件变量异步唤醒阻塞的线程。</p>
+<ul>
+<li>条件变量的类型 pthread_cond_t</li>
+<li>int pthread_cond_init(pthread_cond_t *restrict cond, const pthread_condattr_t *restrict attr);</li>
+<li>int pthread_cond_destroy(pthread_cond_t *cond);</li>
+<li>int pthread_cond_wait(pthread_cond_t *restrict cond, pthread_mutex_t *restrict mutex);</li>
+<li>int pthread_cond_timedwait(pthread_cond_t *restrict cond, pthread_mutex_t *restrict mutex, const struct timespec *restrict abstime);</li>
+<li>int pthread_cond_signal(pthread_cond_t *cond);</li>
+<li>int pthread_cond_broadcast(pthread_cond_t *cond);</li>
+</ul>
+<h3 id="自旋锁-Spin-Lock"><a href="#自旋锁-Spin-Lock" class="headerlink" title="自旋锁 Spin Lock"></a>自旋锁 Spin Lock</h3><p>自旋锁的主要特征是使用者在想要获得临界区执行权限时，如果临界区已经被加锁，那么自旋锁并不会阻塞睡眠，<br>等待系统来主动唤醒，而是原地忙轮询资源是否被释放加锁;<br>自旋锁有它的优点就是避免了系统的唤醒，自己来执行轮询，如果在临界区的资源代码非常短且是原子的，那么使用起来是非常方便的，<br>避免了各种上下文切换，开销非常小，因此在内核的一些数据结构中自旋锁被广泛的使用。</p>
+<h3 id="可重入锁和不可重入锁"><a href="#可重入锁和不可重入锁" class="headerlink" title="可重入锁和不可重入锁"></a>可重入锁和不可重入锁</h3><ul>
+<li>递归锁recursive mutex 可重入锁(reentrant mutex)</li>
+<li>非递归锁non-recursive mutex 不可重入锁(non-reentrant mutex)</li>
+</ul>
+<p><strong>生产/消费者模型实例</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MAX 5</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">pthread_mutex_t</span> mutex = PTHREAD_MUTEX_INITIALIZER;</span><br><span class="line"><span class="keyword">pthread_cond_t</span> notfull = PTHREAD_COND_INITIALIZER;  <span class="comment">//是否队满</span></span><br><span class="line"><span class="keyword">pthread_cond_t</span> notempty = PTHREAD_COND_INITIALIZER; <span class="comment">//是否队空</span></span><br><span class="line"><span class="keyword">int</span> top = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">int</span> bottom = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span>* <span class="title">produce</span><span class="params">(<span class="keyword">void</span>* arg)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    <span class="keyword">for</span> ( i = <span class="number">0</span>; i &lt; MAX*<span class="number">2</span>; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        pthread_mutex_lock(&amp;mutex);</span><br><span class="line">        <span class="keyword">while</span> ((top+<span class="number">1</span>)%MAX == bottom)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;full! producer is waiting\n&quot;</span>);</span><br><span class="line">            <span class="comment">//等待队不满</span></span><br><span class="line">            pthread_cond_wait(notfull, &amp;mutex);</span><br><span class="line">        &#125;</span><br><span class="line">        top = (top+<span class="number">1</span>) % MAX;</span><br><span class="line">        <span class="comment">//发出队非空的消息</span></span><br><span class="line">        pthread_cond_signal(notempty);</span><br><span class="line">        pthread_mutex_unlock(&amp;mutex);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> (<span class="keyword">void</span>*)<span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span>* <span class="title">consume</span><span class="params">(<span class="keyword">void</span>* arg)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    <span class="keyword">for</span> ( i = <span class="number">0</span>; i &lt; MAX*<span class="number">2</span>; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        pthread_mutex_lock(&amp;mutex);</span><br><span class="line">        <span class="keyword">while</span> ( top%MAX == bottom)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;empty! consumer is waiting\n&quot;</span>);</span><br><span class="line">            <span class="comment">//等待队不空</span></span><br><span class="line">            pthread_cond_wait(notempty, &amp;mutex);</span><br><span class="line">        &#125;</span><br><span class="line">        bottom = (bottom+<span class="number">1</span>) % MAX;</span><br><span class="line">        <span class="comment">//发出队不满的消息</span></span><br><span class="line">        pthread_cond_signal(notfull);</span><br><span class="line">        pthread_mutex_unlock(&amp;mutex);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> (<span class="keyword">void</span>*)<span class="number">2</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">pthread_t</span> thid1;</span><br><span class="line">    <span class="keyword">pthread_t</span> thid2;</span><br><span class="line">    <span class="keyword">pthread_t</span> thid3;</span><br><span class="line">    <span class="keyword">pthread_t</span> thid4;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> ret1;</span><br><span class="line">    <span class="keyword">int</span> ret2;</span><br><span class="line">    <span class="keyword">int</span> ret3;</span><br><span class="line">    <span class="keyword">int</span> ret4;</span><br><span class="line"></span><br><span class="line">    pthread_create(&amp;thid1, <span class="literal">NULL</span>, produce, <span class="literal">NULL</span>);</span><br><span class="line">    pthread_create(&amp;thid2, <span class="literal">NULL</span>, consume, <span class="literal">NULL</span>);</span><br><span class="line">    pthread_create(&amp;thid3, <span class="literal">NULL</span>, produce, <span class="literal">NULL</span>);</span><br><span class="line">    pthread_create(&amp;thid4, <span class="literal">NULL</span>, consume, <span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line">    pthread_join(thid1, (<span class="keyword">void</span>**)&amp;ret1);</span><br><span class="line">    pthread_join(thid2, (<span class="keyword">void</span>**)&amp;ret2);</span><br><span class="line">    pthread_join(thid3, (<span class="keyword">void</span>**)&amp;ret3);</span><br><span class="line">    pthread_join(thid4, (<span class="keyword">void</span>**)&amp;ret4);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+  </nav>
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Young</p>
+  <div class="site-description" itemprop="description">C/CPP, Linux, Notes</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Young</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>
